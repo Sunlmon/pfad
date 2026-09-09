@@ -1,10 +1,10 @@
 """
 Candidate A for the brief in BRIEF.md.
 
-    uv run candidate_a.py
+    uv run compare.py          # all three candidates side by side, in a window
+    uv run candidate_a.py    # this one alone, to candidate_a.svg
 
-Prints one row per row of the grid and writes candidate_a.svg.
-Nothing to install — this uses only what ships with Python.
+Nothing to install — on its own this uses only what ships with Python.
 """
 
 import random
@@ -19,7 +19,7 @@ BACKGROUND = "#faf8f4"
 
 
 def damage(row):
-    """How disordered row `row` is."""
+    """How disordered row `row` is: 0 at the top, CHAOS at the bottom."""
     return CHAOS * row / (ROWS - 1)
 
 
@@ -32,42 +32,32 @@ def place(rng, row):
     return angle, dx, dy
 
 
-def square(x, y, angle, dx, dy):
-    cx, cy = x + SQUARE / 2, y + SQUARE / 2
-    return (f'  <rect x="{x:.2f}" y="{y:.2f}" width="{SQUARE}" height="{SQUARE}" '
-            f'transform="translate({dx:.2f} {dy:.2f}) '
-            f'rotate({angle:.2f} {cx:.2f} {cy:.2f})" />')
+def layout():
+    """Every square: (x, y, angle, dx, dy). This is what compare.py draws."""
+    rng = random.Random(SEED)
+    squares = []
+    for row in range(ROWS):
+        for col in range(COLS):
+            angle, dx, dy = place(rng, row)
+            squares.append((MARGIN + col * SQUARE, MARGIN + row * SQUARE, angle, dx, dy))
+    return squares
 
 
 def main():
-    rng = random.Random(SEED)
-    parts = []
-
-    print("row   damage   max move")
-    for row in range(ROWS):
-        moved = 0.0
-        for col in range(COLS):
-            angle, dx, dy = place(rng, row)
-            moved = max(moved, abs(dx), abs(dy))
-            parts.append(square(MARGIN + col * SQUARE, MARGIN + row * SQUARE,
-                                angle, dx, dy))
-        print(f"{row:3d}   {damage(row):6.3f}   {moved:8.2f}")
-
     width = COLS * SQUARE + MARGIN * 2
     height = ROWS * SQUARE + MARGIN * 2
-    svg = "\n".join([
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" '
-        f'viewBox="0 0 {width} {height}">',
-        f'  <rect width="100%" height="100%" fill="{BACKGROUND}" />',
-        f'  <g fill="none" stroke="{STROKE}" stroke-width="1.4">',
-        *parts,
-        "  </g>",
-        "</svg>",
-    ])
-
+    parts = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" '
+             f'viewBox="0 0 {width} {height}">',
+             f'  <rect width="100%" height="100%" fill="{BACKGROUND}" />',
+             f'  <g fill="none" stroke="{STROKE}" stroke-width="1.4">']
+    for x, y, angle, dx, dy in layout():
+        cx, cy = x + SQUARE / 2, y + SQUARE / 2
+        parts.append(f'  <rect x="{x:.2f}" y="{y:.2f}" width="{SQUARE}" height="{SQUARE}" '
+                     f'transform="translate({dx:.2f} {dy:.2f}) rotate({angle:.2f} {cx:.2f} {cy:.2f})" />')
+    parts += ["  </g>", "</svg>"]
     with open("candidate_a.svg", "w", encoding="utf-8") as handle:
-        handle.write(svg)
-    print("wrote candidate_a.svg")
+        handle.write("\n".join(parts))
+    print("wrote candidate_a.svg — open it in a browser")
 
 
 if __name__ == "__main__":

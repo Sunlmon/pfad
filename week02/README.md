@@ -126,19 +126,18 @@ are things that will surprise you from the lecture; the fourth is one character.
 
 ```bash
 cd ../spec
+uv run compare.py
 ```
 
-`BRIEF.md` is a brief with five numbered rules. `candidate_a.py`, `candidate_b.py`
-and `candidate_c.py` are three attempts at it. All three run. All three print a
-plausible table. **Exactly one meets the brief.**
+`BRIEF.md` is four sentences about a picture. `candidate_a.py`, `candidate_b.py`
+and `candidate_c.py` are three attempts at it, and `compare.py` puts them side by
+side over a faint grid of where every square belongs. **Exactly one meets the
+brief.** Press `space`. Look again.
 
 You are the one signing it off. Say which candidate passes, and for each of the
-other two: which rule it breaks, which line, and the fix. `git diff --no-index a b`
-will show you the differences faster than your eyes will.
-
-One of the failures cannot be seen in the table. Read rule 4 again.
-
----
+other two: which rule you can *see* it break, and which line in the file breaks
+it. `git diff --no-index candidate_a.py candidate_b.py` will find the differing
+lines faster than your eyes will — there are only a handful.
 
 ## 1:45 — Commit and push
 
@@ -147,7 +146,7 @@ called `sd5913-notes`. One markdown file, `week02-answers.md`, with:
 
 - your predictions for the three readings, and whether you were right;
 - the fault, line and fix for each of the four programs;
-- the verdict on the three candidates, with the rule numbers;
+- the verdict on the three candidates, with the rule each one breaks;
 - the PNGs you saved, in an `images/` folder, linked from the markdown.
 
 ```bash

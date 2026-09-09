@@ -4,47 +4,33 @@ You are the person who has to sign this off, not the person who wrote it.
 
 ## What was asked for
 
-A program that lays out a **Schotter** grid — `COLS` × `ROWS` squares, ordered at the
-top, coming apart towards the bottom — and, for each row, prints
-
-```
-row   damage   max move
-```
-
-where **damage** is how disordered that row is, and **max move** is the largest
-distance (in pixels, in x or in y) that any square in that row is pushed off its slot.
-It also writes an SVG of the grid so you can look at it.
+A **Schotter**: a grid of squares, in order at the top, coming apart towards the
+bottom. Georg Nees, 1968; the picture from week 1.
 
 ## The rules it has to meet
 
-Constants, fixed for all three: `COLS = 12`, `ROWS = 22`, `SEED = 5913`,
-`CHAOS = 1.0`, `SQUARE = 30`.
-
-1. **The first row is untouched.** Row 0 has damage `0.00`.
-2. **The last row is fully damaged.** Row `ROWS - 1` has damage exactly `CHAOS`.
-3. **Damage grows with the square of the depth.** It is
-   `CHAOS × (fraction of the way down)²`, where the fraction is `0` at the first row
-   and `1` at the last. Not a straight line — the top has to stay calm.
-4. **It is reproducible.** Run it twice, get the same numbers and the same picture.
-   Forever, on any machine.
-5. **Nothing wanders more than half a square.** No square is moved by more than
-   `SQUARE / 2` — that is 15.0 pixels — in x or in y.
+1. **The top row is untouched.** Twelve squares, perfectly in their slots.
+2. **The top stays calm.** The first third of the grid is barely disturbed; the
+   damage comes on late and fast, all of it in the bottom half.
+3. **Same picture every time.** Run it twice, get the same squares. Forever.
+4. **Nothing leaves home.** Even at the bottom, every square stays within half a
+   square of its own slot. Rubble, not scatter.
 
 ## Your job
 
 Three people handed in `candidate_a.py`, `candidate_b.py`, `candidate_c.py`.
-All three run. All three print a table. All three produce a picture that looks
-plausible on a first glance.
+All three run. Look at them side by side:
 
-**Exactly one meets the brief.**
+```bash
+uv run compare.py
+```
 
-Say which, and for each of the other two: **which numbered rule it breaks, which
-line breaks it, and the one-line fix.** One of the two cannot be caught by reading
-the table once — you have to think about what "reproducible" means and do something
-about it.
+The faint grid under each picture is where the squares belong. Press **SPACE** to
+run all three again.
 
-Reading three near-identical files is much easier if you let a machine do the
-comparison:
+**Exactly one meets the brief.** Say which. For each of the other two, say which
+numbered rule you can *see* it break, then open the file and find the line that
+breaks it — the three files differ by a handful of characters:
 
 ```bash
 git diff --no-index candidate_a.py candidate_b.py
