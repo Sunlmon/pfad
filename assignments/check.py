@@ -33,7 +33,7 @@ MIN_COMMITS, MIN_DAYS = 3, 2
 
 JUNK = re.compile(r"(^|/)(\.DS_Store|Thumbs\.db|desktop\.ini|\.vscode/|\.idea/|__pycache__/|node_modules/|.*\.docx?$|.*\.pdf$|.*\.zip$)", re.I)
 ALLOWED = {"README.md", "PROCESS.md", ".gitignore", ".gitattributes", "LICENSE", "LICENSE.md"}
-ALLOWED_DIRS = ("assets/", "images/", "img/")
+ALLOWED_DIRS = ("assets/", "images/", "img/", ".github/")
 
 OK, FAIL, WARN = "  ok  ", "  FAIL", "  note"
 failed = 0
