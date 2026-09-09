@@ -196,6 +196,16 @@ check* appears within a minute. Click it, then *check*, then the *Check* step: t
 same list you saw in the terminal. On the repo's front page the latest commit
 now has a tick or a cross next to it. From now on every push gets one.
 
+> **A small loop.** The check fails on any file that does not belong in the repo,
+> and the workflow that runs the check is a file in the repo. So the checker has a
+> line saying `.github/` is allowed, a rule it needs only because it exists. Could
+> it check that the file really calls the real check? Not from inside: you could
+> write a `check.yml` that prints `ok` and stops, and the tick would be just as
+> green. That is why the tick is evidence, not proof, and why a tutor runs the
+> same script from outside your repo. A system cannot vouch for itself (Gödel,
+> 1931; Ken Thompson, *Reflections on Trusting Trust*, 1984). Keep that in mind
+> every time a generated program says its own tests pass.
+
 ### 6. Submit
 
 Post your repository URL on Canvas **now**, even if lines are still red:
