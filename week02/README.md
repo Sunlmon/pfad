@@ -45,6 +45,10 @@ script you hand in from now on carries that block if it imports anything.
 **Do not type `python`.** On a fresh Windows machine that word opens the Microsoft
 Store. On a Mac it may be a Python from 2019. `uv run` sidesteps both.
 
+If `setup.bat` set this machine up, VS Code also has the Python extension and a
+`.venv` in this repo, so the **▷ Run** button at the top right of the editor runs
+the open file too. Same result; the terminal is the one you can read errors in.
+
 No `uv` on this machine? Download and double-click
 <https://github.com/ait4x/v915-setup/releases/latest/download/setup.bat> (Windows),
 or `brew install uv` (Mac), then come back.
