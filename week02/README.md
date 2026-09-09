@@ -105,9 +105,35 @@ Try it now with something small: add one sentence to `README.md`, save, then run
 the four commands. Refresh the repo page on GitHub — the sentence is there.
 `git log --oneline` shows the history you are building.
 
-> In VS Code the **Source Control** panel (`Ctrl+Shift+G`) does the same thing
-> with buttons: `+` is add, the tick is commit, the sync arrows are push. Type
-> them once first so you know what the buttons do.
+#### The same four words in VS Code
+
+The **Source Control** panel (the branching icon in the left bar, `Ctrl+Shift+G`)
+is the same four commands with buttons on them. Learn which button is which word:
+
+| Terminal | VS Code Source Control panel |
+|---|---|
+| `git status` | The *Changes* list. A file there has changed since the last commit. |
+| `git add` | The `+` next to a file, or the `+` on the *Changes* heading for all of them. The file moves to *Staged Changes*. |
+| `git commit -m "…"` | Type the message in the box at the top, then **Commit**. |
+| `git push` | **Sync Changes**. It pulls first, then pushes. |
+
+Three things that catch people:
+
+- **Commit and push are two steps.** After **Commit** the box empties, but nothing
+  has left your computer. The button then changes to **Sync Changes**. Press it.
+  Only then refresh GitHub.
+- **"Pull" means take from GitHub; "push" means send to GitHub.** If you edited a
+  file on the GitHub website, your computer is behind. **Sync Changes** pulls that
+  edit down before pushing yours up, which is why it is one button and not two.
+  In the terminal that is `git pull`, then `git push`.
+- **A push that is "rejected"** means GitHub has a commit you do not have. Pull
+  first (**Sync Changes** does this), then push again. If VS Code opens a file
+  with `<<<<<<<` in it, both sides changed the same lines: delete the markers,
+  keep the lines you want, save, commit.
+
+Four minutes of video, from the VS Code team, walks through the panel:
+<https://code.visualstudio.com/docs/introvideos/versioncontrol>. The written
+version: <https://code.visualstudio.com/docs/sourcecontrol/overview>.
 
 ### 3. Run the check
 
