@@ -5,7 +5,7 @@ from datetime import date, timedelta
 
 import pytest
 
-from week04.refresh_data import validate
+from week04.refresh_data import ROOT, TARGETS, validate
 
 
 def payload():
@@ -47,3 +47,10 @@ def test_validate_rejects_a_duplicate_date():
 
     with pytest.raises(ValueError, match="one row for every day"):
         validate(json.dumps(raw).encode())
+
+
+def test_worker_snapshot_matches_the_week03_source():
+    source, worker = TARGETS
+
+    assert source == ROOT / "week03" / "data" / "tides-QUB-2026.json"
+    assert source.read_bytes() == worker.read_bytes()

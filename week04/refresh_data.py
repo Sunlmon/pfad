@@ -18,7 +18,11 @@ from pathlib import Path
 
 URL = ("https://data.weather.gov.hk/weatherAPI/opendata/opendata.php"
        "?dataType=HHOT&station=QUB&year=2026&rformat=json")
-TARGET = Path(__file__).resolve().parent.parent / "week03" / "data" / "tides-QUB-2026.json"
+ROOT = Path(__file__).resolve().parent.parent
+TARGETS = [
+    ROOT / "week03" / "data" / "tides-QUB-2026.json",
+    ROOT / "week04" / "tides-QUB-2026.json",
+]
 
 
 def validate(payload):
@@ -68,8 +72,9 @@ def save_atomically(path, content):
 
 def main():
     content = fetch()
-    save_atomically(TARGET, content)
-    print(f"validated and refreshed {TARGET.relative_to(TARGET.parents[1])}")
+    for target in TARGETS:
+        save_atomically(target, content)
+        print(f"validated and refreshed {target.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":
