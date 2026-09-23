@@ -2,7 +2,7 @@
 
 import pytest
 
-from week04.transform import parse_rows, select_month
+from week04.transform import parse_rows, select_day, select_month
 
 
 def row(month, day, height="1.25"):
@@ -25,6 +25,18 @@ def test_select_month_can_return_no_rows():
     records = parse_rows([row(9, 17)])
 
     assert select_month(records, 10) == []
+
+
+def test_select_day_returns_the_matching_record():
+    records = parse_rows([row(9, 17), row(9, 18)])
+
+    assert select_day(records, 17) == records[0]
+
+
+def test_select_day_returns_none_when_absent():
+    records = parse_rows([row(9, 17)])
+
+    assert select_day(records, 18) is None
 
 
 @pytest.mark.parametrize("month", [0, 13])

@@ -15,6 +15,8 @@ import pandas as pd
 import requests
 import streamlit as st
 
+from transform import select_day
+
 API = "http://127.0.0.1:8000/tides"
 
 st.title("Quarry Bay, one day at a time")
@@ -32,9 +34,8 @@ if not rows:
     st.info("There are no rows for that month.")
     st.stop()
 
-by_day = {row["day"]: row for row in rows}
-day = st.selectbox("Day", list(by_day))
-record = by_day[day]
+day = st.selectbox("Day", [row["day"] for row in rows])
+record = select_day(rows, day)
 chart = pd.DataFrame({"Height (m)": record["heights"]}, index=range(1, 25))
 chart.index.name = "Hour"
 st.line_chart(chart)

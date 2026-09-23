@@ -18,3 +18,8 @@ def select_month(rows, month):
     if not 1 <= month <= 12:
         raise ValueError("month must be from 1 to 12")
     return [row for row in rows if row["month"] == month]
+
+
+def select_day(rows, day):
+    """Return one daily record, or None when that day is absent."""
+    return next((row for row in rows if row["day"] == day), None)

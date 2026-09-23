@@ -13,6 +13,7 @@ Run only when you intend to refresh the committed 2026 file:
 import json
 import os
 import tempfile
+from datetime import date, timedelta
 from pathlib import Path
 
 URL = ("https://data.weather.gov.hk/weatherAPI/opendata/opendata.php"
@@ -30,11 +31,15 @@ def validate(payload):
         raise ValueError("expected 365 daily rows")
     if any(not isinstance(row, list) or len(row) != 26 for row in rows):
         raise ValueError("every daily row must have 26 values")
+    dates = []
     for row in rows:
-        int(row[0])
-        int(row[1])
+        month, day = int(row[0]), int(row[1])
+        dates.append(date(2026, month, day))
         for value in row[2:]:
             float(value)
+    expected = [date(2026, 1, 1) + timedelta(days=offset) for offset in range(365)]
+    if dates != expected:
+        raise ValueError("expected one row for every day of 2026 in date order")
     return data
 
 
