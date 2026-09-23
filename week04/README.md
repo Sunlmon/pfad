@@ -76,64 +76,31 @@ same bundle with `uv run pywrangler deploy`. Cloudflare documents the runtime
 in [Python Workers](https://developers.cloudflare.com/workers/languages/python/)
 and its [FastAPI adapter](https://developers.cloudflare.com/workers/languages/python/packages/fastapi/).
 
-## 1:00 — Test the promise first
+## 1:00 — Test the API
 
-The completed tests use tiny fixtures rather than the full file or a live
-network request:
-
-```bash
-uv run --with pytest python -m pytest week04/tests
-```
-
-Now work through the deliberately unfinished version in [`tdd/`](tdd/):
+In a second terminal, start the Worker locally:
 
 ```bash
-uv run --with pytest python -m pytest week04/tdd/test_transform.py
+uv run pywrangler dev
 ```
 
-It should fail because `select_day` is still a stub. Read the assertion as a
-sentence: when the rows contain days 17 and 18, choosing 17 returns the first
-record.
+The first test is in one file, [`tdd/test_api.py`](tdd/test_api.py). It asks
+for September and checks that the API responds with daily records in the
+expected format:
 
-Implement the smallest rule that passes:
-
-```python
-def select_day(rows, day):
-    return next((row for row in rows if row["day"] == day), None)
+```bash
+uv run --with pytest python -m pytest week04/tdd/test_api.py
 ```
 
-Run the same test again. Add a second test for a missing day, then improve the
-code only while both tests stay green. That is the red, green, refactor cycle.
+The development loop is just two colors: write the test first and see it fail;
+add the `/tides` route; run the same test and see it pass. The test checks for
+HTTP 200, the first date, and 24 numeric heights in a record.
 
-## 1:30 — Change one visible behavior
+## 1:30 — Explain the check
 
-Choose one small change:
+Pair up. Run the test again and explain one assertion to your partner: which
+part of the response does it check? Before closing, stop Streamlit with
+`Ctrl+C`.
 
-- Show the day's highest and lowest heights beneath the chart.
-- Make the hour labels start at `01:00` rather than `1`.
-- Add a test before adding an endpoint that returns one day.
-
-Write the interaction before changing the code:
-
-> When I ___, the interface ___.
-
-Ask a partner to use the result without explaining it. Show them the test that
-checks its data rule. Before closing, stop Streamlit with `Ctrl+C`.
-
-## What GitHub checks
-
-[`../.github/workflows/week04-tests.yml`](../.github/workflows/week04-tests.yml)
-runs the completed fixture tests on pushes and pull requests to `2026`. Read it
-after the local test makes sense: the workflow repeats the same command on a
-GitHub machine and shows the result beside the commit.
-
-## Optional: refresh the snapshot
-
-[`../.github/workflows/refresh-tides.yml`](../.github/workflows/refresh-tides.yml)
-is a maintainer example, not a required workshop step. It runs manually, fetches
-the 2026 file, checks that every date and hourly value is present, updates both
-committed copies, runs the offline tests, and commits the replacement only if
-every check passes. The old snapshot remains in Git history.
-
-Start with a manual refresh in your own project. Add a schedule only when the
-source should keep changing and you understand what a failed fetch should do.
+The repository also has extra checks for maintainers. For today, focus on the
+single test file and the red-to-green change.
