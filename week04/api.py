@@ -21,7 +21,11 @@ DATA = Path(__file__).resolve().parent / "tides-QUB-2026.json"
 app = FastAPI(title="Quarry Bay tides")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://sd5913.github.io"],
+    allow_origins=[
+        "https://sd5913.github.io",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+    ],
     allow_methods=["GET"],
     allow_headers=[],
 )
