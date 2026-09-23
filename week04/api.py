@@ -1,16 +1,22 @@
 """A small read-only API over week 3's committed HKO tide data.
 
-    uv run --with fastapi --with uvicorn uvicorn week04.api:app --reload
+Run it as a local Python Worker:
+
+    uv run pywrangler dev
 """
 
 import json
 from pathlib import Path
 
 from fastapi import FastAPI, Query
+from workers import asgi
 
-from week04.transform import parse_rows, select_month
+try:
+    from .transform import parse_rows, select_month
+except ImportError:  # The Worker loads api.py as a top-level module.
+    from transform import parse_rows, select_month
 
-DATA = Path(__file__).resolve().parent.parent / "week03" / "data" / "tides-QUB-2026.json"
+DATA = Path(__file__).resolve().parent / "tides-QUB-2026.json"
 app = FastAPI(title="Quarry Bay tides")
 
 
@@ -24,3 +30,7 @@ def load_rows():
 def tides(month: int = Query(ge=1, le=12)):
     """Return one month's daily records as JSON."""
     return select_month(load_rows(), month)
+
+
+# Cloudflare's Python ASGI adapter turns the FastAPI app into a Worker entrypoint.
+Default = asgi.entrypoint(app)

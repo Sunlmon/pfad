@@ -18,3 +18,5 @@ jobs:
       - uses: astral-sh/setup-uv@v6
       - name: Run deterministic tests
         run: uv run --with pytest python -m pytest week04/tests
+      - name: Validate the Python Worker bundle
+        run: uv run pywrangler deploy --dry-run

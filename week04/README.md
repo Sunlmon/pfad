@@ -8,7 +8,7 @@ The promise for the whole session is:
 > When I choose a day, the chart shows that day's 24 hourly tide heights.
 
 The example reuses the committed Hong Kong Observatory file in
-[`week03/data/`](../week03/data/). The app and tests work from that snapshot, so
+[`week03/data/`](../week03/data/). A copy is bundled with a Python Worker, so
 class does not depend on the Observatory being online.
 
 ```bash
@@ -18,20 +18,15 @@ git pull
 
 ## 0:00 — Run the complete interaction
 
-Start the API from the repository root:
-
-```bash
-uv run --with fastapi --with uvicorn uvicorn week04.api:app --reload
-```
-
-Open a second terminal at the repository root and start the interface:
+Start the interface from the repository root:
 
 ```bash
 uv run --with streamlit --with pandas --with requests streamlit run week04/app.py
 ```
 
 Choose September, then change the day. The chart should always contain 24
-heights. Keep both terminals open until the final exercise.
+heights. The Streamlit script asks the deployed Python Worker at
+<https://sd5913-week04-tides.venetanji.workers.dev> for its data.
 
 The interaction has three parts:
 
@@ -51,14 +46,35 @@ Read [`app.py`](app.py) from the first `selectbox` to `st.line_chart`:
 4. `select_day(rows, day)` returns one record.
 5. The chart draws that record's 24 heights.
 
-Open <http://127.0.0.1:8000/docs>. FastAPI builds this page from
+Open <https://sd5913-week04-tides.venetanji.workers.dev/docs>. FastAPI builds this page from
 [`api.py`](api.py). Try `GET /tides` with month `9` and inspect one returned
-record. The Streamlit page is the person-facing client; the FastAPI process is
+record. The Streamlit page is the person-facing client; the FastAPI Worker is
 the service it asks for data.
 
-The API reads the committed file. It does not fetch from the Observatory while
-someone is using the app. [`transform.py`](transform.py) holds the small data
-rules that both the app and its tests can call directly.
+The Worker runs Python through Pyodide on Cloudflare. Its `Default` entrypoint
+adapts the same FastAPI app to an incoming Worker request:
+
+```python
+from workers import asgi
+
+Default = asgi.entrypoint(app)
+```
+
+The Worker reads its bundled snapshot. It does not fetch from the Observatory
+while someone is using the app. [`transform.py`](transform.py) holds the small
+data rules that the service, the app and the tests share.
+
+To run the Worker locally, install Node.js and use:
+
+```bash
+uv run pywrangler dev
+```
+
+[`../wrangler.jsonc`](../wrangler.jsonc) names the Worker, selects Python 3.13,
+includes the JSON snapshot, and enables observability. A maintainer deploys the
+same bundle with `uv run pywrangler deploy`. Cloudflare documents the runtime
+in [Python Workers](https://developers.cloudflare.com/workers/languages/python/)
+and its [FastAPI adapter](https://developers.cloudflare.com/workers/languages/python/packages/fastapi/).
 
 ## 1:00 — Test the promise first
 
@@ -102,7 +118,7 @@ Write the interaction before changing the code:
 > When I ___, the interface ___.
 
 Ask a partner to use the result without explaining it. Show them the test that
-checks its data rule. Before closing, stop both running programs with `Ctrl+C`.
+checks its data rule. Before closing, stop Streamlit with `Ctrl+C`.
 
 ## What GitHub checks
 
@@ -115,9 +131,9 @@ GitHub machine and shows the result beside the commit.
 
 [`../.github/workflows/refresh-tides.yml`](../.github/workflows/refresh-tides.yml)
 is a maintainer example, not a required workshop step. It runs manually, fetches
-the 2026 file, checks that every date and hourly value is present, runs the
-offline tests, and commits the replacement only if every check passes. The old
-snapshot remains in Git history.
+the 2026 file, checks that every date and hourly value is present, updates both
+committed copies, runs the offline tests, and commits the replacement only if
+every check passes. The old snapshot remains in Git history.
 
 Start with a manual refresh in your own project. Add a schedule only when the
 source should keep changing and you understand what a failed fetch should do.
