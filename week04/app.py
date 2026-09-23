@@ -3,9 +3,8 @@
 # dependencies = ["pandas", "requests", "streamlit"]
 # ///
 
-"""A Streamlit client for the FastAPI example.
+"""A Streamlit client for the FastAPI Worker example.
 
-    uv run --with fastapi --with uvicorn uvicorn week04.api:app --reload
     uv run --with streamlit --with pandas --with requests streamlit run week04/app.py
 """
 
@@ -17,7 +16,10 @@ import streamlit as st
 
 from transform import select_day
 
-API = "http://127.0.0.1:8000/tides"
+API = (
+    "https://sd5913-week04-tides.venetanji.workers.dev"
+    "/tides"
+)
 
 st.title("Quarry Bay, one day at a time")
 month = st.selectbox("Month", range(1, 13), format_func=lambda n: calendar.month_name[n])
@@ -26,7 +28,7 @@ try:
     response = requests.get(API, params={"month": month}, timeout=10)
     response.raise_for_status()
 except requests.RequestException as exc:
-    st.error("The tide API is not responding. Start it in another terminal.")
+    st.error("The tide API is not responding. Try again in a moment.")
     st.stop()
 
 rows = response.json()
