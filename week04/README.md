@@ -1,15 +1,16 @@
 # Week 04 — One control, one clear response
 
-Two hours. Put a surface on last week's tide data, trace one action through the
-program, then protect its rule with a test.
+Two hours. Build a chart from local tide data, then compare it with a separate
+browser-and-API example. Protect one API rule with a test.
 
 The promise for the whole session is:
 
 > When I choose a day, the chart shows that day's 24 hourly tide heights.
 
-The example reuses the committed Hong Kong Observatory file in
-[`week03/data/`](../week03/data/). A copy is bundled with a Python Worker, so
-class does not depend on the Observatory being online.
+The Streamlit example reads the committed Hong Kong Observatory snapshot in
+[`tides-QUB-2026.json`](tides-QUB-2026.json). It loads a local file and creates
+the page; it does not make an API request. The separate API example serves the
+same snapshot from a Python Worker.
 
 ```bash
 cd pfad
@@ -21,12 +22,12 @@ git pull
 Start the interface from the repository root:
 
 ```bash
-uv run --with streamlit --with pandas --with requests streamlit run week04/app.py
+uv run --with streamlit --with pandas streamlit run week04/app.py
 ```
 
 Choose September, then change the day. The chart should always contain 24
-heights. The Streamlit script asks the deployed Python Worker at
-<https://sd5913-week04-tides.venetanji.workers.dev> for its data.
+heights. Streamlit reads the bundled JSON file directly, then generates the
+page and chart.
 
 The interaction has three parts:
 
@@ -38,18 +39,24 @@ The interaction has three parts:
 
 ## 0:30 — Trace one choice
 
-Read [`app.py`](app.py) from the first `selectbox` to `st.line_chart`:
+Read [`app.py`](app.py) from the data-file load to `st.line_chart`:
 
-1. The month selector supplies a number.
-2. `requests.get` asks `GET /tides?month=9` for that month's rows.
-3. The day selector supplies a day found in the response.
-4. `select_day(rows, day)` returns one record.
-5. The chart draws that record's 24 heights.
+1. Python reads `tides-QUB-2026.json` from the same folder.
+2. `parse_rows` turns its records into usable values.
+3. The month selector filters those local rows.
+4. The day selector and `select_day` choose one day's record.
+5. Streamlit draws that record's 24 heights.
 
-Open <https://sd5913-week04-tides.venetanji.workers.dev/docs>. FastAPI builds this page from
-[`api.py`](api.py). Try `GET /tides` with month `9` and inspect one returned
-record. The Streamlit page is the person-facing client; the FastAPI Worker is
-the service it asks for data.
+This is a single app: the Python code reads a file and Streamlit generates the
+HTML page. The FastAPI Worker is a separate example. Open
+<https://sd5913-week04-tides.venetanji.workers.dev/docs>, try `GET /tides` with
+month `9`, and inspect one returned record.
+
+The browser version keeps the frontend and backend separate. A static HTML and
+JavaScript page can be published on GitHub Pages; JavaScript uses `fetch()` to
+request JSON from the FastAPI Worker and a chart library such as Recharts
+renders the data. The Week 4 slides show this browser request. The Streamlit
+example does not call that API.
 
 The Worker runs Python through Pyodide on Cloudflare. Its `Default` entrypoint
 adapts the same FastAPI app to an incoming Worker request:
@@ -62,7 +69,7 @@ Default = asgi.entrypoint(app)
 
 The Worker reads its bundled snapshot. It does not fetch from the Observatory
 while someone is using the app. [`transform.py`](transform.py) holds the small
-data rules that the service, the app and the tests share.
+data rules shared by the API, the Streamlit app and the tests.
 
 To run the Worker locally, install Node.js and use:
 
@@ -78,7 +85,7 @@ and its [FastAPI adapter](https://developers.cloudflare.com/workers/languages/py
 
 ## 1:00 — Test the API
 
-In a second terminal, start the Worker locally:
+For the API example, start the Worker locally in a second terminal:
 
 ```bash
 uv run pywrangler dev

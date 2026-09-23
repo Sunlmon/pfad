@@ -1,37 +1,30 @@
 # /// script
 # requires-python = ">=3.10"
-# dependencies = ["pandas", "requests", "streamlit"]
+# dependencies = ["pandas", "streamlit"]
 # ///
 
-"""A Streamlit client for the FastAPI Worker example.
+"""A Streamlit app that reads its bundled tide data file.
 
-    uv run --with streamlit --with pandas --with requests streamlit run week04/app.py
+    uv run --with streamlit --with pandas streamlit run week04/app.py
 """
 
 import calendar
+import json
+from pathlib import Path
 
 import pandas as pd
-import requests
 import streamlit as st
 
-from transform import select_day
+from transform import parse_rows, select_day, select_month
 
-API = (
-    "https://sd5913-week04-tides.venetanji.workers.dev"
-    "/tides"
-)
+DATA_FILE = Path(__file__).resolve().with_name("tides-QUB-2026.json")
+DATA = json.loads(DATA_FILE.read_text(encoding="utf-8"))
+ALL_ROWS = parse_rows(DATA["data"])
 
 st.title("Quarry Bay, one day at a time")
 month = st.selectbox("Month", range(1, 13), format_func=lambda n: calendar.month_name[n])
 
-try:
-    response = requests.get(API, params={"month": month}, timeout=10)
-    response.raise_for_status()
-except requests.RequestException as exc:
-    st.error("The tide API is not responding. Try again in a moment.")
-    st.stop()
-
-rows = response.json()
+rows = select_month(ALL_ROWS, month)
 if not rows:
     st.info("There are no rows for that month.")
     st.stop()
