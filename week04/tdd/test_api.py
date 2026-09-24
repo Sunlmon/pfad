@@ -7,7 +7,7 @@ API = "http://127.0.0.1:8787/tides?month=9"
 
 
 def test_september_tides_returns_daily_records():
-    with urlopen(API) as response:
+    with urlopen(API, timeout=10) as response:
         assert response.status == 200
         rows = load(response)
 
