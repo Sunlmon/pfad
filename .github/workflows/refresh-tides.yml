@@ -16,7 +16,7 @@ jobs:
       - name: Fetch and validate the HKO file
         run: uv run week04/refresh_data.py
       - name: Run tests against fixtures
-        run: uv run --with pytest python -m pytest week04/tests
+        run: uv run --with pytest --with streamlit --with pandas python -m pytest week04/tests
       - name: Commit the refreshed snapshot
         run: |
           git config user.name "github-actions[bot]"
