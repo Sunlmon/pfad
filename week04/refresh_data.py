@@ -11,6 +11,7 @@ Run only when you intend to refresh the committed 2026 file:
 """
 
 import json
+import math
 import os
 import tempfile
 from datetime import date, timedelta
@@ -29,8 +30,8 @@ def validate(payload):
     """Raise ValueError unless this looks like the expected full HKO year."""
     data = json.loads(payload)
     fields, rows = data.get("fields"), data.get("data")
-    if not isinstance(fields, list) or len(fields) != 26:
-        raise ValueError("expected 26 HKO fields (month, day, and 24 hours)")
+    if fields != ["MM", "DD", *(f"{hour:02}" for hour in range(1, 25))]:
+        raise ValueError("expected 26 HKO fields in order: MM, DD, 01 through 24")
     if not isinstance(rows, list) or len(rows) != 365:
         raise ValueError("expected 365 daily rows")
     if any(not isinstance(row, list) or len(row) != 26 for row in rows):
@@ -40,7 +41,8 @@ def validate(payload):
         month, day = int(row[0]), int(row[1])
         dates.append(date(2026, month, day))
         for value in row[2:]:
-            float(value)
+            if not math.isfinite(float(value)):
+                raise ValueError("every height must be a finite number")
     expected = [date(2026, 1, 1) + timedelta(days=offset) for offset in range(365)]
     if dates != expected:
         raise ValueError("expected one row for every day of 2026 in date order")

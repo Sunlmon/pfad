@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 
 from fastapi import FastAPI, Query
+from fastapi.middleware.cors import CORSMiddleware
 from workers import asgi
 
 try:
@@ -18,6 +19,16 @@ except ImportError:  # The Worker loads api.py as a top-level module.
 
 DATA = Path(__file__).resolve().parent / "tides-QUB-2026.json"
 app = FastAPI(title="Quarry Bay tides")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://sd5913.github.io",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+    ],
+    allow_methods=["GET"],
+    allow_headers=[],
+)
 
 
 def load_rows():
