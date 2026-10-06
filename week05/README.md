@@ -14,7 +14,7 @@ Run the local Python example from this directory:
 uv run logo_ascii.py
 ```
 
-It uses `ascii-magic` to make **ten** text versions (12 to 66 columns at the same character-width ratio), writes a short looping GIF of changing text resolution, and makes `out/logo-ascii.html`. Open the HTML file in a browser: move the **columns** slider to compare sparse and dense versions, then press **Play**. The slider chooses precomputed text frames; Python and `ascii-magic` produce them first. The GIF is a separate file, not a video stream. First run downloads dependencies; no GPU, API key or account is needed.
+It uses `ascii-magic` to make **ten** text versions (12 to 66 columns at the same character-width ratio), writes a short looping GIF of changing text resolution, and makes `out/logo-ascii.html`. Open the HTML file in a browser: move the **columns** slider to compare sparse and dense versions, then press **Play**. The slider chooses precomputed text frames; Python and `ascii-magic` produce them first. The GIF is a separate file, not a video stream. The GIF uses the included DejaVu Sans Mono font (license in `assets/DejaVuSansMono-LICENSE.txt`) so spaces and character positions stay aligned. On a phone, swipe sideways within the text panel to see the widest frames at a readable size. First run downloads dependencies; no GPU, API key or account is needed.
 
 Try changing the source:
 

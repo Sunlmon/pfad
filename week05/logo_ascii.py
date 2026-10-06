@@ -17,6 +17,11 @@ CHARACTERS = '@%#*+=-:. '
 BACKGROUND = '#FAF8F4'
 INK = '#000B1C'
 SIZE = (640, 560)
+MONO_FONT = HERE / 'assets/DejaVuSansMono.ttf'
+
+
+def mono_font(size: int) -> ImageFont.FreeTypeFont:
+    return ImageFont.truetype(str(MONO_FONT), size)
 
 
 def prepare_source(source: Path, out: Path) -> Path:
@@ -60,9 +65,9 @@ def render_frame(text: str, columns: int) -> Image.Image:
     draw.text((24, 16), f'{columns} columns / {len(rows)} rows', fill=INK,
               font=ImageFont.load_default(size=20))
     for size in range(54, 9, -1):
-        font = ImageFont.load_default(size=size)
-        char_width = draw.textlength('M', font=font)
-        line_height = size * 1.12
+        font = mono_font(size)
+        char_width = font.getlength('M')
+        line_height = size * 1.25
         if longest * char_width <= SIZE[0] - 48 and len(rows) * line_height <= SIZE[1] - 125:
             break
     first_x = (SIZE[0] - longest * char_width) / 2
@@ -89,21 +94,21 @@ small, label, button { font:14px 'Courier New',monospace; text-transform:upperca
 p { max-width:65ch; line-height:1.5 } .panels { display:grid; grid-template-columns:1fr 1.7fr;
   gap:22px; margin:28px 0 } .panel { min-width:0; border:1px solid #bdc0bf; padding:16px;
   background:white } .panel img { display:block; max-width:100%; max-height:470px; margin:auto }
-pre { margin:0; min-height:470px; overflow:auto; white-space:pre;
-  font:clamp(5px,1.06vw,14px)/1 monospace; color:var(--ink) }
+pre { margin:0; min-height:470px; max-width:100%; overflow:auto; white-space:pre;
+  font:15px/1.25 monospace; color:var(--ink) }
 .controls { display:flex; flex-wrap:wrap; align-items:center; gap:14px; margin:20px 0 }
 input[type=range] { width:min(380px,65vw); accent-color:var(--accent) }
 button { padding:12px 18px; background:var(--ink); color:white; border:0; cursor:pointer }
 button:focus-visible, input:focus-visible { outline:3px solid var(--accent); outline-offset:3px }
 a { color:#99421e } @media(max-width:700px) { .panels { grid-template-columns:1fr }
-  pre { min-height:250px; font-size:clamp(5px,1.4vw,11px) } }
+  pre { min-height:250px; font-size:13px } }
 </style>
 <main><small>SD5913 / Week 5 / local ASCII</small><h1>One mark. Several resolutions.</h1>
 <p>The source on the left is a pixel image. The text on the right is computed locally by Python and
 ascii-magic. Move the slider to inspect an exact text frame. Play runs those frames in sequence;
 it does not invent new pixels or send your image to a service.</p>
 <div class="panels"><div class="panel"><small>Original (cropped)</small><img src="source-crop.png" alt="Cropped source mark"></div>
-<div class="panel"><small>Text frame</small><pre id="frame" aria-label="ASCII rendering"></pre></div></div>
+<div class="panel"><small>Text frame · swipe sideways to inspect dense frames</small><pre id="frame" aria-label="ASCII rendering"></pre></div></div>
 <div class="controls"><label for="width">Columns: <output id="count">36</output></label>
 <input id="width" type="range" min="0" max="9" value="4" step="1" aria-label="Text columns">
 <button id="play" type="button" aria-pressed="false">Play</button>
@@ -151,7 +156,8 @@ def main() -> None:
     args.output_dir.mkdir(parents=True, exist_ok=True)
     cropped = prepare_source(args.image, args.output_dir)
     art = AsciiArt.from_image(str(cropped))
-    frames = [{'columns': columns, 'text': art.to_ascii(columns=columns, char=CHARACTERS)}
+    frames = [{'columns': columns,
+               'text': art.to_ascii(columns=columns, char=CHARACTERS, width_ratio=1.5)}
               for columns in WIDTHS]
     data = {'source_sha256': hashlib.sha256(args.image.read_bytes()).hexdigest(),
             'frames': frames}
