@@ -62,6 +62,9 @@ now, know that they exist and that switching between them is free.
 
 ## Reference
 
+The [8 October images and frames examples](week05/README.md) are in `week05/`:
+pixels, NumPy/Pillow, random noise, GIFs, local ASCII and an API request preview.
+
 Five pages the weekly tutorials assume and do not repeat — index at
 [`reference/README.md`](reference/README.md).
 
