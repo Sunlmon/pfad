@@ -1,4 +1,8 @@
-# Week 5 tutorial — one mark, several representations
+# 8 October 2026 tutorial — one mark, several representations
+
+This is the `week05` folder for the lesson taught on 8 October, after the
+1 October holiday. The folder number follows the course content rather than the
+calendar week.
 
 We have two marks from the introductions: a pixel yarn-ball (Mark 18) and an arrow with a separate underscore (Mark 38). They are examples of student work, not final course branding. Their later ASCII-on-screen and wool treatments are **experiments**; the lecturer will replace the examples when the final two images are ready. Do not call them the chosen A/B logos yet.
 

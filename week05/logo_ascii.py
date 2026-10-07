@@ -103,7 +103,7 @@ button:focus-visible, input:focus-visible { outline:3px solid var(--accent); out
 a { color:#99421e } @media(max-width:700px) { .panels { grid-template-columns:1fr }
   pre { min-height:250px; font-size:13px } }
 </style>
-<main><small>SD5913 / Week 5 / local ASCII</small><h1>One mark. Several resolutions.</h1>
+<main><small>SD5913 / 8 October 2026 / local ASCII</small><h1>One mark. Several resolutions.</h1>
 <p>The source on the left is a pixel image. The text on the right is computed locally by Python and
 ascii-magic. Move the slider to inspect an exact text frame. Play runs those frames in sequence;
 it does not invent new pixels or send your image to a service.</p>
