@@ -94,6 +94,15 @@ Pick **your own** image, not the class's draft mark. The script writes `out/avat
 
 Notice the three different decisions: which image is the source, which transformation you run, and which version *you* choose to publish as an icon.
 
+## Optional local-model demo
+
+[Run Stable Diffusion with Diffusers](diffusion/README.md) shows a separate `uv`
+environment, accelerator-aware PyTorch installation, a device check, and a
+Python pipeline that saves an image plus its settings. Follow this only if you
+want to explore local models; it is not required for the tutorial. Pre-download
+the libraries and weights, and expect CPU execution to be slow. The core examples
+above still need no GPU or model download.
+
 ## Check the examples
 
 From the repository root:
