@@ -18,6 +18,8 @@ runs, so expect it to grow week by week — `git pull` before each class.
 3. **Read [`assignments/01-why-are-we-here.md`](assignments/01-why-are-we-here.md).**
    Your first assignment is due at the end of week 2. Before you submit, run
    [the check](assignments/check.py) inside your repo — it tells you what is missing.
+4. **For the current lesson, go to [Week 5: images, frames and representations](week05/README.md).**
+   The [weekly content index](#weekly-content) links to the same material.
 
 ```bash
 git clone https://github.com/sd5913/pfad
@@ -100,5 +102,6 @@ can show people. Treat them accordingly.
 | 02 | [Your repo passes the check · predict, break, fix](week02/README.md) |
 | 03 | [Numbers into pictures — data, loops, functions, matplotlib](week03/README.md) |
 | 04 | [One control, one clear response — Streamlit, browser events, FastAPI and a test](week04/README.md) |
+| 05 | [Images, frames and representations — 8 October 2026](week05/README.md) |
 
 More lands each week.
