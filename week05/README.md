@@ -4,6 +4,10 @@ This is the `week05` folder for the lesson taught on 8 October, after the
 1 October holiday. The folder number follows the course content rather than the
 calendar week.
 
+**Dates to remember:** the mid-term quiz is in class on Thursday 22 October;
+Assignment 3 (interactive experience) is due Sunday 1 November at 23:59
+Hong Kong time. The assignment brief and submission instructions follow separately.
+
 Start at the repository root (`pfad`), switch to `2026`, and pull the latest
 material. These scripts declare their own dependencies for `uv`; they do not
 need the Week 4 Worker environment. The first run needs internet to download
