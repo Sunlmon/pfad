@@ -4,6 +4,10 @@ This is the `week05` folder for the lesson taught on 8 October, after the
 1 October holiday. The folder number follows the course content rather than the
 calendar week.
 
+**Dates to remember:** the mid-term quiz is in class on Thursday 22 October;
+Assignment 3 (interactive experience) is due Sunday 1 November at 23:59
+Hong Kong time. The assignment brief and submission instructions follow separately.
+
 Start at the repository root (`pfad`), switch to `2026`, and pull the latest
 material. These scripts declare their own dependencies for `uv`; they do not
 need the Week 4 Worker environment. The first run needs internet to download
@@ -82,7 +86,7 @@ Questions to write in your notes: At which width does the trailing strand disapp
 
 We have tried two opposite directions: start from the yarn-ball mark, convert it into ASCII, then use that ASCII image as a visual input for an *image edit* that stages the characters on a screen. Start from the arrow-and-underscore mark and edit its material into wool, keeping its two pieces distinct. These are exploratory outputs, not exact reproductions or the final choice.
 
-Compare the actual [56-column ASCII input](assets/mark-18-ascii-edit-input.png) with the [draft CRT edit](assets/mark-18-crt-draft.png). This exact input is from an earlier, denser ten-size conversion of Mark 18; its character ramp differs from the smaller classroom script above. For the second case, compare the [original arrow-plus-underscore mark](assets/mark-38.png) with the [draft wool edit](assets/mark-38-wool-draft.png). The input image matters when you judge what the model changed.
+Compare the actual [56-column ASCII input](assets/mark-18-ascii-edit-input.png) with the [draft CRT edit](assets/mark-18-crt-draft.png). This exact input is from an earlier, denser ten-size conversion of Mark 18; its character ramp differs from the smaller classroom script above. For the second case, compare the [original arrow-plus-underscore mark](assets/mark-38.png) with the [guided wool edit used in the slides](assets/mark-38-wool-guided.jpg). The input image matters when you judge what the model changed.
 
 If the instructor has preflighted an image-edit client, use your exported ASCII image as the **input image** and describe what should change around it: "Put this ASCII mark on a dark CRT screen; retain the ball, trailing strand and character arrangement; no extra letters." Keep the input, prompt, output and model/settings together. This is an edit with an image input, **not** the text-only image-generation request from last week. No student account or paid call is required for this tutorial; use the prepared classroom example if the service is unavailable.
 

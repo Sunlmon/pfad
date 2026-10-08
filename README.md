@@ -80,10 +80,13 @@ Five pages the weekly tutorials assume and do not repeat — index at
 |---|---|---|---|
 | 1 | [Why are we here?](assignments/01-why-are-we-here.md) — a reflection, published as a repository | 5% | Sun 13 Sep 2026, 23:59 |
 | 2 | [Data visualisation](assignments/02-data-visualisation.md) — numbers about a natural phenomenon, made into a picture | 10% | Sun 4 Oct 2026, 23:59 |
-| 3 | Interactive experience project | 15% | TBC |
+| 3 | Interactive experience project | 15% | Sun 1 Nov 2026, 23:59 (Hong Kong time) |
 
-Plus participation (10%), a mid-term quiz (10%), the group project (40%), and a
-final quiz (10%).
+Plus participation (10%), a mid-term quiz **in class on Thu 22 Oct 2026**
+(10%), the group project (40%), and a final quiz (10%).
+
+The Assignment 3 brief and submission instructions will be provided separately;
+this date is a reminder, not the complete assignment specification.
 
 **Everything you submit in this course is a portfolio piece.** Your repositories
 are public, your commits carry your name, and they accumulate into something you
