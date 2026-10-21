@@ -1,59 +1,114 @@
-# Week 8 — plan one small piece and work on it together
+# Week 8 — one piece that works (Thu 29 Oct 2026)
 
-> **Planning draft for 2026.** Adapted from the supplied 2025 Week 8 slides.
-> Confirm lecture alignment and preflight the chosen tools before release.
+Bring your Week 7 idea and mock-up. Today you will turn one interaction into a
+small, testable next step, give a teammate a way to review it, and explain how
+someone else could repeat a run. These are team working notes, **not another
+assessed submission**. Check with your instructor how your group agrees its
+project scope under the existing Week 8 course plan.
 
-## Team activity: one small, testable piece
+## Try a tiny class first
 
-1. Agree the user/player, one action and one response from your Week 7 idea.
-2. List the small tasks needed for that interaction. Choose a short, realistic
-   goal for the next work period, rather than promising the whole project.
-3. Put the tasks in a simple backlog. For each selected task, name a person
-   and say how the team will know it works.
-4. Choose one task to work on in a feature branch. Have another person read
-   the change and its result before combining it with the team's work.
-5. At the end, show what works, what remains and the next small step.
+The [Tile example](tile_demo.py) is a **text-only model**, not a clickable
+interface or audio player. A class describes a kind of object; `blue` and `red`
+are two separate objects made from it. Each starts unselected. Calling
+`blue.choose()` changes only blue's `selected` value from `False` to `True`.
+The program prints their states so you can check that prediction without a
+browser, a speaker or extra Python packages.
 
-This borrows the archive's sprint/backlog/increment language without asking
-students to adopt a full professional Scrum process. Agree group scope with the
-instructor by Week 8 under the existing course plan. Do not invent a team size,
-new deadline or assessment requirement.
+From the `pfad` repository root, with Python 3 installed, run:
 
-## Tutorial: same project, different environment
+```bash
+python -B week08/tile_demo.py
+```
 
-Use one existing project with known run instructions.
+On a machine where `python` is not Python 3, use
+`python3 -B week08/tile_demo.py` instead (or
+`py -3 -B week08/tile_demo.py` on Windows).
+Expect these two lines:
 
-1. Identify its code, dependencies and data.
-2. Draw which parts live on the host and which would live in a container.
-   Distinguish an image (a template) from a running container.
-3. With an instructor-prepared example, change a disposable sample value.
-   Predict what survives stopping/restarting the container and what depends on
-   a mounted folder or volume.
-4. Record the observed result and the command that produced it. Keep the
-   example small enough that another person can follow it.
+```text
+Before: blue=False, red=False
+After:  blue=True, red=False
+```
 
-**Working evidence:** a task list and one environment/persistence observation,
-kept as team working notes. These are not extra assessed submissions.
+Predict before running: if you replace `blue.choose()` with `red.choose()`,
+what changes in the second line? Try it, then restore the original. A visible
+tile on a screen would still need interface code to display this state; a tone
+would need separate sound code. Neither is promised by this Python example.
+To check the example's state and its printed result, from the same folder run:
 
-## Setup and fallback
+```bash
+python -B -m unittest discover -s week08 -p "test_*.py"
+```
 
-The exact Docker/Compose example and commands still need compatibility checks.
-Do not install containers or start services from old slides without checking
-their purpose and current instructions. Never mount secrets or broad personal
-folders. A diagram and prepared output trace are a valid no-install route.
+You should see `OK`. `-B` avoids writing Python cache files in this folder.
+The tests use only the Python standard library.
 
-Computer vision was also in the old tutorial, but is an optional extension, not
-a second required stack. A pointer or sample coordinate sequence can stand in
-for a camera. Capture must be opt-in; no recording/upload by default and no
-claims about a person's feelings or attention.
+## Turn your idea into one test
 
-## Sources and release checklist
+1. From your Week 7 mock-up, name a person, **one action** they take and **one
+   response** they can notice. Example: a visitor taps a blue tile and sees it
+   highlighted. A sound is optional; visible feedback also works without
+   speakers.
+2. Write a sentence another person can test: "When a visitor chooses blue,
+   blue becomes selected and red does not." Ask what would count as evidence
+   rather than promising a complete installation. The Python example checks
+   state only; a real interface needs a person to try its visible response.
+3. Put a few tasks in order: respond to a tap, show selection, test with a
+   person, then consider other sounds/tiles. Choose a short next goal such as
+   "one tile gives visible feedback"; leave the rest in the backlog. Borrow
+   goal/backlog/increment vocabulary from Scrum without adopting formal roles.
+   An **increment** is a usable change, not just a list of tasks.
+4. For the chosen task, note who will try it and what result they expect. If
+   nothing runs yet, label the expectation as untested rather than claiming it
+   works. Show what works, what remains and the next small test.
 
-- Supplied “SD5913 - PFAD - Week 8.pdf”: pp19–23 Scrum and team workflow;
-  pp24–29 Git branches; pp30–43 Docker/Compose/persistence; pp44–49 vision;
-  pp51–61 tutorial. Page references use PDF page order.
-- Current foundation: [Git reference](../reference/git.md) and existing weekly
-  run instructions. Historical code: [2025 Week 8](https://github.com/sd5913/pfad/tree/2025/week08).
-- The activities are proposed 2026 adaptations, not verbatim archival tasks.
-- Pending: aligned lesson, chosen prepared example, tested start/stop and
-  persistence behaviour, cross-platform notes and no-install fallback.
+## Make the change reviewable
+
+Use your team's working version as the starting point. Work on one small
+feature branch; commit a change that has a clear purpose and open a pull
+request to the team project. In its description, say what should happen, how
+to run it and what you actually checked. A second person reads the change and
+tries the interaction before the team combines it. If both people edit the
+same line, resolve the conflict together; even a conflict-free merge needs a
+test of the combined project. A pull request is a request for review, not
+proof that a change works. See the [Git reference](../reference/git.md) for
+branches and the everyday commands.
+
+## Can another person repeat your result?
+
+Swap run instructions with a teammate. Point to the entry command and working
+folder, needed code and packages, and a safe sample input. For this demo the
+entry command is `python -B week08/tile_demo.py`, there are no third-party
+packages, and the two colour names are built into the file. What would a
+new person see? What might fail on another machine? Improve one instruction
+in your own project's README, then ask the teammate to try it. Do not share
+credentials or private data to make a run work.
+
+**Optional paper trace, no container install required:** An image is a
+template; a container is an instance with a writable layer. Imagine a program
+writes `choice.txt` inside that layer. Predict what happens when you (a) stop
+and restart the *same* container and (b) remove it and create a new one from
+the image. In (a) the file remains; in (b) the unmounted file is lost. If the
+file instead lives in a bind-mounted host folder or named volume, it can
+survive removal **when the new container reconnects the same mount**. A named
+volume does not need a running container to exist, but deleting that volume
+explicitly destroys its data. This is a conceptual trace, not measured output
+or an instruction to install Docker/Compose. Keep secrets and personal folders
+out of mounts.
+
+Camera/gesture input and AI agent tools are optional connections, not required
+project stacks. A coordinate sequence can replace a camera; capture is opt-in,
+with no recording or upload by default. A tool suggestion does not grant an
+agent permission to use the tool.
+
+## Sources
+
+- Historical “SD5913 - PFAD - Week 8.pdf”: pp19–23 Scrum/team workflow;
+  pp24–29 branches; pp30–43 containers/persistence; pp44–49 vision;
+  pp51–61 tutorial (PDF page order). These are background, not 2026 deadlines,
+  team arrangements or mandatory software instructions.
+- Current foundation: [Git reference](../reference/git.md) and the earlier
+  weekly run guides. Historical code: [2025 Week 8](https://github.com/sd5913/pfad/tree/2025/week08).
+- This 2026 activity and the two-object example adapt the Week 8 teaching
+  sequence; they are not verbatim archival tasks.

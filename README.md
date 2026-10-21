@@ -18,7 +18,7 @@ runs, so expect it to grow week by week — `git pull` before each class.
 3. **Read [`assignments/01-why-are-we-here.md`](assignments/01-why-are-we-here.md).**
    Your first assignment is due at the end of week 2. Before you submit, run
    [the check](assignments/check.py) inside your repo — it tells you what is missing.
-4. **For the current lesson, go to [Week 6: sound, music and speech](week06/README.md).**
+4. **For the current lesson, go to [Week 8: one piece that works](week08/README.md).**
    The [weekly content index](#weekly-content) links to the same material.
 
 ```bash
@@ -64,9 +64,9 @@ now, know that they exist and that switching between them is free.
 
 ## Reference
 
-The current [sound, music and speech tutorial](week06/README.md) is in `week06/`:
-WAV samples, browser instruments, a song API preview, and an optional local voice
-chatbot. The [images and frames examples](week05/README.md) remain in `week05/`.
+The current [Week 8 companion](week08/README.md) includes a small Python class
+example and a team workflow activity. Earlier [sound, music and speech](week06/README.md)
+and [images and frames](week05/README.md) examples remain available.
 
 Five pages the weekly tutorials assume and do not repeat — index at
 [`reference/README.md`](reference/README.md).
@@ -105,5 +105,6 @@ can show people. Treat them accordingly.
 | 04 | [One control, one clear response — Streamlit, browser events, FastAPI and a test](week04/README.md) |
 | 05 | [Images, frames and representations — 8 October 2026](week05/README.md) |
 | 06 | [Sound, music and speech — WAV samples, browser instruments and a local voice bot](week06/README.md) |
+| 08 | [One piece that works — team planning, a small class, review and reproducible runs (Thu 29 Oct 2026)](week08/README.md) |
 
 More lands each week.
