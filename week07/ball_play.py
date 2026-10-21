@@ -1,85 +1,81 @@
 # /// script
 # requires-python = ">=3.10"
-# dependencies = []
+# dependencies = ["watchfiles==1.3.0"]
 # ///
-"""A tiny terminal ball game built on the Week 7 Ball class."""
+"""An animated ASCII view of the shared Ball physics model."""
 
-import argparse
+import shutil
+import sys
+import textwrap
+import time
 
 if __package__:
-    from .ball import Ball
+    from .ball_live import Simulation
 else:
-    from ball import Ball
-
-WIDTH = 11
-ROUNDS = 10
+    from ball_live import Simulation
 
 
-def step(ball):
-    """Move one space, then turn around at either end of the lane."""
-    ball.update(1)
-    if ball.position == 0 or ball.position == WIDTH - 1:
-        ball.velocity = -ball.velocity
+def render_ascii(balls, width, height, columns=61, rows=19):
+    cells = [[" "] * columns for _ in range(rows)]
+    for index, ball in enumerate(balls):
+        x = min(columns - 1, max(0, round(ball.x / width * (columns - 1))))
+        y = min(rows - 1, max(0, round(ball.y / height * (rows - 1))))
+        cells[y][x] = "R" if index == 0 else "B"
+    border = "+" + "-" * columns + "+"
+    return "\n".join([border, *("|" + "".join(row) + "|" for row in cells), border])
 
 
-def lane(ball, symbol):
-    cells = ["."] * WIDTH
-    cells[ball.position] = symbol
-    return "".join(cells)
+class AsciiView:
+    def __init__(self, stream=None):
+        self.stream = sys.stdout if stream is None else stream
+        self.enabled = self.stream.isatty()
+        if self.enabled:
+            self.stream.write("\033[2J\033[?25l")
 
+    def draw(self, simulation):
+        if not self.enabled:
+            return
+        terminal = shutil.get_terminal_size((80, 30))
+        # Leave a column and a row unused to avoid terminal wrapping and scrolling.
+        width, height = max(1, terminal.columns - 1), max(1, terminal.lines - 1)
+        heading = textwrap.wrap("BALL PHYSICS / ASCII / same model as the graphical view", width)
+        counter = textwrap.wrap(f"Frame {simulation.ticks} / revision {simulation.revision}", width)
+        status = textwrap.wrap(simulation.status, width)
+        if len(status) > 2:
+            status = [status[0], status[1][:max(0, width - 3)] + "." * min(3, width)]
+        help_text = textwrap.wrap("Edit ball.py and save. Ctrl+C or close the window to stop.", width)
+        rows = min(19, height - len(heading + counter + status + help_text) - 2)
+        if width < 10 or rows < 2:
+            text = "Enlarge terminal"[:width]
+        else:
+            board = render_ascii(simulation.balls, simulation.model.WIDTH, simulation.model.HEIGHT,
+                                 columns=min(61, width - 2), rows=rows)
+            text = "\n".join([*heading, board, *counter, *status, *help_text])
+        self.stream.write("\033[H" + text + "\033[J")
+        self.stream.flush()
 
-def starting_balls():
-    return Ball(position=2, velocity=1), Ball(position=7, velocity=-1)
-
-
-def feedback(guess, position):
-    if guess == position:
-        return f"Caught it at {position}! Try another guess or change the speed."
-    return f"Missed: red finished at {position}, not {guess}. Try again."
-
-
-def play(guess=None):
-    red, blue = starting_balls()
-
-    print("Guess where red will be after 10 moves (0 to 10).")
-    for turn in range(ROUNDS + 1):
-        print(f"{turn:2}  {lane(red, 'R')}  {lane(blue, 'B')}")
-        if turn < ROUNDS:
-            step(red)
-            step(blue)
-
-    if guess is not None:
-        print(feedback(guess, red.position))
-
-
-def ask_guess():
-    while True:
-        try:
-            answer = input("Catch red at column 0-10? (Enter to watch): ").strip()
-        except EOFError:
-            return None
-        if not answer:
-            return None
-        try:
-            guess = int(answer)
-        except ValueError:
-            print("Enter a whole number from 0 to 10.")
-            continue
-        if 0 <= guess < WIDTH:
-            return guess
-        print("Choose a column from 0 to 10.")
+    def close(self):
+        if self.enabled:
+            self.stream.write("\033[?25h\n")
+            self.stream.flush()
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--guess", type=int, help="Catch red at a column from 0 to 10")
-    parser.add_argument("--watch", action="store_true", help="Show the trace without a guess")
-    args = parser.parse_args()
-    if args.watch and args.guess is not None:
-        parser.error("choose --watch or --guess, not both")
-    if args.guess is not None and not 0 <= args.guess < WIDTH:
-        parser.error(f"--guess must be between 0 and {WIDTH - 1}")
-    play(ask_guess() if args.guess is None and not args.watch else args.guess)
+    simulation = Simulation()
+    view = AsciiView()
+    previous = time.monotonic()
+    try:
+        while True:
+            now = time.monotonic()
+            simulation.advance(now - previous)
+            previous = now
+            view.draw(simulation)
+            time.sleep(1 / 30)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        simulation.close()
+        view.close()
 
 
 if __name__ == "__main__":
