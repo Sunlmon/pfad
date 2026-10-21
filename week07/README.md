@@ -72,16 +72,22 @@ and attributable; do not commit credentials or private recordings.
 
 ### Optional extension: give one thing its own state
 
-Use the Ball example from the supplied Week 7 PDF, p52, as a starting idea:
-one object stores its position and velocity, and update(dt) changes its position.
-For the introductory version, use explicit position/velocity arguments rather
-than the archive's **kwargs or Processing-specific vector setup. Sketch two
-balls with different values, then trace update(1) for each. What stays separate
-between the two objects? Which behaviour do they share?
+Try the small, self-contained [two-ball example](ball.py). From the repository
+root, run `python week07/ball.py` (or `python3` where that is your Python
+command). It needs no installs, internet, API key or graphics framework.
+Predict the output before running: red starts at 2 and moves 3 units per
+second; blue starts at 10 and moves -1 unit per second. Which ball moves after
+`red.update(1)`? What changes after `blue.update(1)`? Try changing one velocity
+or calling `red.update(0)`, then compare the printed positions.
 
-This is a proposed introduction to classes and objects, not an advanced
-asyncio exercise. A diagram and value trace are sufficient today; no new
-framework or object-oriented prototype is required.
+The supplied Week 7 PDF, p52, offers a more involved Ball example. This version
+keeps explicit position/velocity arguments instead of the archive's `**kwargs`
+or Processing-specific vector setup. It models one dimension so you can see
+that each object owns its position, while both share the same `update` rule.
+Sketch the two objects and trace them on paper if Python is unavailable.
+
+This is optional practice, not an advanced asyncio exercise or an assessed
+object-oriented prototype. A diagram and value trace are sufficient today.
 
 ### If AI helps with the change
 
