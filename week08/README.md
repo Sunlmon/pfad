@@ -112,3 +112,9 @@ agent permission to use the tool.
   weekly run guides. Historical code: [2025 Week 8](https://github.com/sd5913/pfad/tree/2025/week08).
 - This 2026 activity and the two-object example adapt the Week 8 teaching
   sequence; they are not verbatim archival tasks.
+
+## Verification scope
+
+Independent verification (21 October 2026): the two standard-library tests passed on Linux x86_64 with Python 3.12.14. The Docker section is a conceptual paper trace, not a claimed container run.
+
+The PR workflow checks every available Week 8–12 companion on an Ubuntu 24.04 runner, including the real local MCP smoke when Week 12 is present. It does not deploy or publish the course.
