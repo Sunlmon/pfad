@@ -1,8 +1,94 @@
 # Week 7 — from an idea to one interaction
 
-**22 October 2026.** The midterm is 10:00–10:30 HKT. This page is for the
-group work after the quiz and the optional tutorial that follows it.
+**22 October 2026.** The midterm is 10:00–10:30 HKT. After the quiz: a short
+classes demonstration, the team-registration demo, then two team activities.
 Follow the instructor's quiz instructions; this activity does not change them.
+
+## After the quiz: one class, two views
+
+The instructor demonstrates this example from the laptop. Classes are the only
+new theory in this part of the lesson; watching the demo is enough. Running or
+remixing it yourself is optional practice, with no additional submission.
+
+### 1. Two balls, two sets of attributes
+
+Open [ball.py](ball.py). `Ball` is a **class**, a definition we use to create
+objects. `red` and `blue` are two **instances** of that class. Each has its own
+position (`x`, `y`), velocity (`vx`, `vy`) and `radius`. `__init__` sets their
+starting attributes. In a method, `self` means the particular ball receiving
+the call.
+
+Run from the repository root:
+
+```bash
+uv run week07/ball.py
+```
+
+Predict the output before running it:
+
+```text
+Before: red=(16, 8), blue=(44, 14)
+After red.update(0.1): red=(17.40, 7.78), blue=(44, 14)
+After blue.update(0.1): red=(17.40, 7.78), blue=(43.00, 13.38)
+```
+
+`red.update(0.1)` advances red by one tenth of a second. Blue stays where it
+was until its own method is called. The class is shared; each object's
+attributes are separate. Trace `self.vy += GRAVITY * seconds`, then the position
+updates. Gravity changes vertical velocity; collisions reverse and reduce the
+velocity at a wall or floor. Coordinates start at the top left, so increasing
+`y` moves down.
+
+### 2. One moving model, two ways to draw it
+
+```bash
+uv run week07/ball_both.py
+```
+
+Keep the terminal visible beside the graphical window. The terminal draws
+`R` and `B`; Pygame draws coloured circles. Both draw the **same ball objects
+from the same simulation**, with gravity and bouncing in both views. Only the
+rendering changes. The terminal has a coarser grid, so small movements can
+remain in the same character cell. `uv` downloads Pygame and `watchfiles`
+automatically on the first run; no flags or separate installation are needed.
+
+### 3. Edit the class while both views are open
+
+Keep [ball.py](ball.py) open in your editor. Change one value, predict the
+result, then save:
+
+- Change `GRAVITY = 28` to `GRAVITY = 56` for stronger downward acceleration.
+- Change `BOUNCE = 0.82` to `BOUNCE = 1` to preserve more speed at collisions.
+- Change one starting `vx` or `vy` in `starting_balls()` to affect only that ball.
+- Change a line in `Ball.update()` to change the behaviour shared by both balls.
+
+`watchfiles` notices the save, reloads `Ball` and restarts both views together
+from their starting positions. Both windows stay open. This is a reset using
+the new class, rather than migration of objects already in flight. A syntax
+error or an immediately failing update keeps the previous working model moving;
+an error encountered later freezes the last valid state. Read the terminal's
+error message, fix the code and save again to recover.
+
+In the graphical window, **Space** pauses/resumes and **R** resets. Closing it
+or pressing **Ctrl+C** in the terminal stops both views. Each renderer can also
+run by itself:
+
+```bash
+uv run week07/ball_play.py      # ASCII only; Ctrl+C stops it
+uv run week07/ball_pygame.py    # Pygame only; close the window to stop
+uv run week07/ball_both.py      # both views, synchronized
+```
+
+All three watch the same `ball.py` and reload on save. Starting the renderers
+separately gives each its own simulation clock; use `ball_both.py` to keep them
+exactly in sync. No display, API key or model download is needed for ASCII.
+
+Focus on `ball.py` during the explanation. [ball_live.py](ball_live.py) supplies
+the simulation clock and reload support; [ball_play.py](ball_play.py) and
+[ball_pygame.py](ball_pygame.py) supply the renderers; [ball_both.py](ball_both.py)
+starts the synchronized pair. They are supporting code
+to explore later, not additional theory for today's lecture. Offline checks
+run with `uv run week07/test_examples.py`.
 
 ## First, form your team
 
@@ -55,7 +141,7 @@ working user input, a meaningful response and feedback? Have you tried an
 ordinary mistake? Note one next fix and when you will test it with someone.
 Check the brief for `README.md`, `PROCESS.md`, credits and submission details;
 the group mock-up is not a substitute for your individual project. If time is
-tight, work on this before the optional ball practice below.
+tight, work on this before optional practice.
 
 ## Tutorial: try one small change (optional practice)
 
@@ -83,74 +169,12 @@ the change you would test. You can still explain the interaction without
 installing a new stack. If working in your own repository, keep changes small
 and attributable; do not commit credentials or private recordings.
 
-### Optional ball lab: from a number to a tiny game
-
-This is a progression you can stop at any step. Run the commands from the
-repository root with `uv`, as in the earlier tutorials. The first three steps
-use only Python's standard library. The optional Pygame step downloads its
-library automatically on the first run. No API key is needed.
-
-**1. Two balls, two memories.** Read [ball.py](ball.py), then predict the three
-printed lines before running `uv run week07/ball.py`. Red starts at 2 with
-velocity 3; blue starts at 10 with velocity -1. After only `red.update(1)`,
-the positions are 5 and 10. After `blue.update(1)`, they are 5 and 9. Why did
-blue not move on red's turn? Change red's velocity to -2, or try
-`red.update(0)`. Check your prediction before continuing.
-
-**2. Draw a lane and make a guess.** Read [ball_play.py](ball_play.py), then
-run `uv run week07/ball_play.py`. Type a column from 0 to 10 to catch red;
-press Enter without a number to watch without guessing. A typo invites you
-to try again. For a repeatable run, use `uv run week07/ball_play.py --guess 4`;
-`--watch` skips the input prompt. `R` and `B` each have their own row; dots
-are empty spaces and the leftmost column is 0. The first two rows are:
-
-```text
- 0  ..R........  .......B...
- 1  ...R.......  ......B....
-```
-
-Find `lane`: which line turns the number `ball.position` into a visible mark?
-Find `step`: where is `Ball.update(1)` called? Pause at turn 1 and predict turn
-2 before reading it. The rows show separate objects, not two pictures of one.
-
-**3. Find the wall and the feedback.** Keep reading the same run. Red reaches the
-right wall at column 10 on turn 8; its velocity changes from 1 to -1 and it
-heads back. Blue hits the left wall earlier. Before looking at turn 10, guess
-red's final column. Try an incorrect guess and then a correct one. The typed
-guess is user input; the catch/miss message is feedback. An out-of-range
-guess, such as `--guess 11`, prints an explanation instead of accepting an
-impossible catch. What would change if the game reported no feedback?
-
-**4. Same class, new canvas (optional).** [ball_pygame.py](ball_pygame.py)
-imports `starting_balls` and `step` from the terminal version, which in turn
-use the **same** `Ball` class from `ball.py`. It changes only how you see and
-control the game. Pygame needs a window; `uv` handles its first-time download:
-
-```bash
-uv run week07/ball_pygame.py
-```
-
-Click a numbered tick on the red (upper) lane to place your catcher, press
-Space to advance one move, and press R to restart. The circles represent the
-same positions as the `R`/`B` characters in the terminal. Predict where red
-will be after ten moves; compare the feedback in both versions. If you cannot
-install Pygame or open a window, stay with the terminal version: it is fully
-usable on its own. Pygame is **not** needed for Assignment 3.
-
-**5. Remix, if you have time.** Change one starting position between 1 and 9,
-or the number of `ROUNDS`, and predict the result. Then add your own response:
-for example, print a celebration when the balls occupy the same column, or
-ask for a second guess. Which changes to `Ball` or `step` would show up in
-**both** views? Keep each ball one step per turn: the simple wall rule assumes
-speed 1, so changing a velocity to 2 needs a new boundary rule. Ask a partner
-to try your change and explain what they expected. This input ->
-response -> feedback loop can inspire Assignment 3, but an unchanged tutorial
-example is **not** an Assignment 3 submission.
-
-The supplied 2025 Week 7 PDF, p52, offers a more involved Ball example. Here
-the explicit arguments replace its `**kwargs` and Processing-specific vector
-setup. Trace on paper if Python is unavailable. This is optional practice, not
-an advanced asyncio exercise or an assessed object-oriented prototype.
+You can also return to the ball demonstration above. Explain which changes
+belong in the shared model and which belong in a renderer. Ask a partner to
+predict one change before saving it. An unchanged tutorial example is **not**
+an Assignment 3 submission. The supplied 2025 Week 7 PDF, p52, offers a more
+involved Ball example; our explicit arguments replace its `**kwargs` and
+Processing-specific vectors. Trace on paper if Python is unavailable.
 
 ### If AI helps with the change
 
@@ -193,7 +217,7 @@ Use its own brief and Canvas submission instructions.
 
 ## Instructor review and sources
 
-This README is proposed in a draft PR. The two 20-minute activities follow the
+The two 20-minute activities follow the
 [Week 7 lesson plan](https://github.com/sd5913/teaching/blob/31c675b4085f771da6340878f3a54d7018f1015d/lessons/week07-lesson-plan.md)
 in teaching PR #10. The optional tutorial adapts existing 2026 Weeks 4–6;
 it is not an activity recovered from last year's slides. The supplied 2025 PDF, “SD5913 - PFAD - Week 7.pdf”, pp15–28 and
