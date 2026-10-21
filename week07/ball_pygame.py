@@ -1,6 +1,13 @@
+# /// script
+# requires-python = ">=3.10,<3.14"
+# dependencies = ["pygame==2.6.1"]
+# ///
 """The same Ball objects as ball_play, now drawn in a Pygame window."""
 
-from week07.ball_play import ROUNDS, WIDTH, feedback, starting_balls, step
+if __package__:
+    from .ball_play import ROUNDS, WIDTH, feedback, starting_balls, step
+else:
+    from ball_play import ROUNDS, WIDTH, feedback, starting_balls, step
 
 CELL = 48
 LEFT = 80
@@ -21,8 +28,7 @@ def main():
         import pygame
     except ImportError as exc:
         raise SystemExit(
-            "Pygame is optional. From the pfad root run: "
-            "uv run --no-project --with pygame python -m week07.ball_pygame"
+            "From the pfad root run: uv run week07/ball_pygame.py"
         ) from exc
 
     pygame.init()

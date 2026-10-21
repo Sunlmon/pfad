@@ -1,3 +1,7 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = []
+# ///
 """Two independent objects for the optional Week 7 tutorial."""
 
 

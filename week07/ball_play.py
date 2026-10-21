@@ -1,8 +1,15 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = []
+# ///
 """A tiny terminal ball game built on the Week 7 Ball class."""
 
 import argparse
 
-from week07.ball import Ball
+if __package__:
+    from .ball import Ball
+else:
+    from ball import Ball
 
 WIDTH = 11
 ROUNDS = 10

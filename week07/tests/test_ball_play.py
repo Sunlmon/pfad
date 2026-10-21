@@ -2,6 +2,7 @@
 
 import contextlib
 import io
+from pathlib import Path
 import subprocess
 import sys
 import unittest
@@ -42,7 +43,7 @@ class BallPlayTests(unittest.TestCase):
 
     def test_invalid_guess_is_explained(self):
         result = subprocess.run(
-            [sys.executable, "-m", "week07.ball_play", "--guess", str(WIDTH)],
+            [sys.executable, str(Path(__file__).resolve().parents[1] / "ball_play.py"), "--guess", str(WIDTH)],
             capture_output=True,
             text=True,
             check=False,
@@ -52,7 +53,7 @@ class BallPlayTests(unittest.TestCase):
 
     def test_terminal_input_and_retry(self):
         result = subprocess.run(
-            [sys.executable, "-m", "week07.ball_play"],
+            [sys.executable, str(Path(__file__).resolve().parents[1] / "ball_play.py")],
             input="oops\n11\n8\n",
             capture_output=True,
             text=True,

@@ -85,22 +85,22 @@ and attributable; do not commit credentials or private recordings.
 
 ### Optional ball lab: from a number to a tiny game
 
-This is a progression you can stop at any step. The first three steps need
-only Python 3: no installs, graphics framework, internet or API key. The
-optional Pygame step has its own setup. Run the commands from the repository
-root (use `python3` instead if that is your Python command).
+This is a progression you can stop at any step. Run the commands from the
+repository root with `uv`, as in the earlier tutorials. The first three steps
+use only Python's standard library. The optional Pygame step downloads its
+library automatically on the first run. No API key is needed.
 
 **1. Two balls, two memories.** Read [ball.py](ball.py), then predict the three
-printed lines before running `python -m week07.ball`. Red starts at 2 with
+printed lines before running `uv run week07/ball.py`. Red starts at 2 with
 velocity 3; blue starts at 10 with velocity -1. After only `red.update(1)`,
 the positions are 5 and 10. After `blue.update(1)`, they are 5 and 9. Why did
 blue not move on red's turn? Change red's velocity to -2, or try
 `red.update(0)`. Check your prediction before continuing.
 
 **2. Draw a lane and make a guess.** Read [ball_play.py](ball_play.py), then
-run `python -m week07.ball_play`. Type a column from 0 to 10 to catch red;
+run `uv run week07/ball_play.py`. Type a column from 0 to 10 to catch red;
 press Enter without a number to watch without guessing. A typo invites you
-to try again. For a repeatable run, use `python -m week07.ball_play --guess 4`;
+to try again. For a repeatable run, use `uv run week07/ball_play.py --guess 4`;
 `--watch` skips the input prompt. `R` and `B` each have their own row; dots
 are empty spaces and the leftmost column is 0. The first two rows are:
 
@@ -124,10 +124,10 @@ impossible catch. What would change if the game reported no feedback?
 **4. Same class, new canvas (optional).** [ball_pygame.py](ball_pygame.py)
 imports `starting_balls` and `step` from the terminal version, which in turn
 use the **same** `Ball` class from `ball.py`. It changes only how you see and
-control the game. Pygame needs a window and a first-time download:
+control the game. Pygame needs a window; `uv` handles its first-time download:
 
 ```bash
-uv run --no-project --with pygame python -m week07.ball_pygame
+uv run week07/ball_pygame.py
 ```
 
 Click a numbered tick on the red (upper) lane to place your catcher, press
