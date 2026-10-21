@@ -42,7 +42,20 @@ logo or setting up a new image-generation account.
 
 These are today's two idea-development submissions. There is no extra
 prototype, video, pitch deck or critique submission. Use remaining class time
-for feedback and helping people find a group.
+for feedback, helping people find a group, and checking your separate
+Assignment 3 progress.
+
+## Before you leave: protect time for Assignment 3
+
+This is **individual work**, not a third team submission. Open the
+[Assignment 3 brief](https://github.com/sd5913/teaching/blob/main/syllabus/03-interactive-experience.md)
+and your own repository. Due **Sunday 1 November 2026, 23:59 HKT**: your own
+public GitHub repository URL goes to Canvas. Does your experience have one
+working user input, a meaningful response and feedback? Have you tried an
+ordinary mistake? Note one next fix and when you will test it with someone.
+Check the brief for `README.md`, `PROCESS.md`, credits and submission details;
+the group mock-up is not a substitute for your individual project. If time is
+tight, work on this before the optional ball practice below.
 
 ## Tutorial: try one small change (optional practice)
 
@@ -70,24 +83,74 @@ the change you would test. You can still explain the interaction without
 installing a new stack. If working in your own repository, keep changes small
 and attributable; do not commit credentials or private recordings.
 
-### Optional extension: give one thing its own state
+### Optional ball lab: from a number to a tiny game
 
-Try the small, self-contained [two-ball example](ball.py). From the repository
-root, run `python week07/ball.py` (or `python3` where that is your Python
-command). It needs no installs, internet, API key or graphics framework.
-Predict the output before running: red starts at 2 and moves 3 units per
-second; blue starts at 10 and moves -1 unit per second. Which ball moves after
-`red.update(1)`? What changes after `blue.update(1)`? Try changing one velocity
-or calling `red.update(0)`, then compare the printed positions.
+This is a progression you can stop at any step. The first three steps need
+only Python 3: no installs, graphics framework, internet or API key. The
+optional Pygame step has its own setup. Run the commands from the repository
+root (use `python3` instead if that is your Python command).
 
-The supplied Week 7 PDF, p52, offers a more involved Ball example. This version
-keeps explicit position/velocity arguments instead of the archive's `**kwargs`
-or Processing-specific vector setup. It models one dimension so you can see
-that each object owns its position, while both share the same `update` rule.
-Sketch the two objects and trace them on paper if Python is unavailable.
+**1. Two balls, two memories.** Read [ball.py](ball.py), then predict the three
+printed lines before running `python -m week07.ball`. Red starts at 2 with
+velocity 3; blue starts at 10 with velocity -1. After only `red.update(1)`,
+the positions are 5 and 10. After `blue.update(1)`, they are 5 and 9. Why did
+blue not move on red's turn? Change red's velocity to -2, or try
+`red.update(0)`. Check your prediction before continuing.
 
-This is optional practice, not an advanced asyncio exercise or an assessed
-object-oriented prototype. A diagram and value trace are sufficient today.
+**2. Draw a lane and make a guess.** Read [ball_play.py](ball_play.py), then
+run `python -m week07.ball_play`. Type a column from 0 to 10 to catch red;
+press Enter without a number to watch without guessing. A typo invites you
+to try again. For a repeatable run, use `python -m week07.ball_play --guess 4`;
+`--watch` skips the input prompt. `R` and `B` each have their own row; dots
+are empty spaces and the leftmost column is 0. The first two rows are:
+
+```text
+ 0  ..R........  .......B...
+ 1  ...R.......  ......B....
+```
+
+Find `lane`: which line turns the number `ball.position` into a visible mark?
+Find `step`: where is `Ball.update(1)` called? Pause at turn 1 and predict turn
+2 before reading it. The rows show separate objects, not two pictures of one.
+
+**3. Find the wall and the feedback.** Keep reading the same run. Red reaches the
+right wall at column 10 on turn 8; its velocity changes from 1 to -1 and it
+heads back. Blue hits the left wall earlier. Before looking at turn 10, guess
+red's final column. Try an incorrect guess and then a correct one. The typed
+guess is user input; the catch/miss message is feedback. An out-of-range
+guess, such as `--guess 11`, prints an explanation instead of accepting an
+impossible catch. What would change if the game reported no feedback?
+
+**4. Same class, new canvas (optional).** [ball_pygame.py](ball_pygame.py)
+imports `starting_balls` and `step` from the terminal version, which in turn
+use the **same** `Ball` class from `ball.py`. It changes only how you see and
+control the game. Pygame needs a window and a first-time download:
+
+```bash
+uv run --no-project --with pygame python -m week07.ball_pygame
+```
+
+Click a numbered tick on the red (upper) lane to place your catcher, press
+Space to advance one move, and press R to restart. The circles represent the
+same positions as the `R`/`B` characters in the terminal. Predict where red
+will be after ten moves; compare the feedback in both versions. If you cannot
+install Pygame or open a window, stay with the terminal version: it is fully
+usable on its own. Pygame is **not** needed for Assignment 3.
+
+**5. Remix, if you have time.** Change one starting position between 1 and 9,
+or the number of `ROUNDS`, and predict the result. Then add your own response:
+for example, print a celebration when the balls occupy the same column, or
+ask for a second guess. Which changes to `Ball` or `step` would show up in
+**both** views? Keep each ball one step per turn: the simple wall rule assumes
+speed 1, so changing a velocity to 2 needs a new boundary rule. Ask a partner
+to try your change and explain what they expected. This input ->
+response -> feedback loop can inspire Assignment 3, but an unchanged tutorial
+example is **not** an Assignment 3 submission.
+
+The supplied 2025 Week 7 PDF, p52, offers a more involved Ball example. Here
+the explicit arguments replace its `**kwargs` and Processing-specific vector
+setup. Trace on paper if Python is unavailable. This is optional practice, not
+an advanced asyncio exercise or an assessed object-oriented prototype.
 
 ### If AI helps with the change
 
