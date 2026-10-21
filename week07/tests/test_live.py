@@ -85,6 +85,19 @@ class LiveTests(unittest.TestCase):
         self.assertFalse(simulation.reload())
         self.assertIs(simulation.model, model)
 
+    def test_paused_reload_rejects_balls_that_protrude_outside_the_arena(self):
+        simulation = self.simulation()
+        model = simulation.model
+        before = [vars(ball).copy() for ball in simulation.balls]
+        for position in ("x=0.5, y=8", "x=59.5, y=8", "x=16, y=0.5", "x=16, y=35.5"):
+            with self.subTest(position=position):
+                self.path.write_text(self.source.replace("Ball(x=16, y=8", f"Ball({position}"))
+                simulation.changed.set()
+                simulation.advance(0)
+                self.assertIs(simulation.model, model)
+                self.assertEqual(simulation.revision, 1)
+                self.assertEqual([vars(ball) for ball in simulation.balls], before)
+
     def test_late_invalid_state_freezes_the_last_renderable_frame(self):
         simulation = self.simulation()
         simulation.model.GRAVITY = float("nan")

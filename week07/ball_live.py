@@ -15,6 +15,9 @@ def validate_ball(ball, model):
         raise ValueError("Ball coordinates, velocity and radius must be finite")
     if not 0 < ball.radius < min(model.WIDTH, model.HEIGHT) / 2:
         raise ValueError("Ball radius must be positive and fit inside the arena")
+    if not (ball.radius <= ball.x <= model.WIDTH - ball.radius
+            and ball.radius <= ball.y <= model.HEIGHT - ball.radius):
+        raise ValueError("Ball position must fit inside the arena, including its radius")
 
 
 class Simulation:
