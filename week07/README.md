@@ -93,19 +93,22 @@ time, or treat a single attempt as a benchmark.
 
 ## Optional current examples — checked 21 October 2026
 
-These are discussion prompts, not required tools.
+These are discussion prompts, not required tools. See the
+[companion lecture news brief](https://github.com/sd5913/teaching/blob/2fe0d30d4dcdc7c19665be0e10b568220b53f15f/lessons/week07-news-20261021.md)
+for the release context. Performance descriptions come from the vendors;
+we have not reproduced their benchmarks.
 
-- [OpenAI's MultiLangBench announcement](https://openai.com/index/low-resource-programming-languages/)
+- **19 October 2026:** [OpenAI's MultiLangBench announcement](https://openai.com/index/low-resource-programming-languages/)
   and [evaluation repository](https://github.com/openai/MultiLangBench)
   concern testing programming tasks across languages. Open evaluation code is
   not the same thing as open model weights. For our exercise: what test would
   show that your changed function works?
-- [Anthropic's release notes](https://platform.claude.com/docs/en/release-notes/overview)
+- **15 October 2026, fast-mode general availability:** [Anthropic's release notes](https://platform.claude.com/docs/en/release-notes/overview)
   and [fast-mode documentation](https://platform.claude.com/docs/en/build-with-claude/fast-mode)
   describe a faster output mode. Generating tokens faster does not measure
   setup, failed attempts or debugging. For our exercise: measure time to a
   working interaction, including retries.
-- [MiniMax's M3.1 Flash announcement](https://www.minimax.io/blog/minimax-m31f)
+- **19 October 2026:** [MiniMax's M3.1 Flash announcement](https://www.minimax.io/blog/minimax-m31f)
   describes hosted availability and a later weights release. Do not call it
   open-weight before the weights are released. No signup or paid API is needed
   to take part in this tutorial.
