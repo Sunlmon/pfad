@@ -12,7 +12,7 @@ os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
 os.environ.setdefault("SDL_AUDIODRIVER", "dummy")
 import pygame
 
-from week07 import ball_pygame
+from week07 import ball_both, ball_pygame
 from week07.ball_live import MODEL, Simulation
 
 
@@ -22,6 +22,27 @@ class Terminal(io.StringIO):
 
 
 class ViewTests(unittest.TestCase):
+    def test_graphical_view_runs_without_drawing_in_the_terminal(self):
+        simulation = Simulation(watch=False)
+        self.addCleanup(simulation.close)
+        terminal = Terminal()
+        frames = 0
+        original_flip = pygame.display.flip
+
+        def flip():
+            nonlocal frames
+            frames += 1
+            self.assertEqual(terminal.getvalue(), "")
+            original_flip()
+            if frames == 3:
+                self.assertGreater(simulation.balls[0].x, 16)
+                pygame.event.post(pygame.event.Event(pygame.QUIT))
+
+        with patch.object(ball_pygame, "Simulation", return_value=simulation), \
+                patch("sys.stdout", terminal), patch.object(pygame.display, "flip", flip):
+            ball_pygame.main()
+        self.assertEqual(terminal.getvalue(), "")
+
     def test_both_views_move_reload_pause_and_close_together(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "ball.py"
@@ -81,7 +102,7 @@ class ViewTests(unittest.TestCase):
                     patch("sys.stdout", terminal), \
                     patch("week07.ball_play.shutil.get_terminal_size", return_value=os.terminal_size((80, 30))), \
                     patch.object(pygame.display, "flip", flip):
-                ball_pygame.main()
+                ball_both.main()
             self.assertEqual(phase, "closed")
             self.assertFalse(simulation.thread.is_alive())
             self.assertTrue(terminal.getvalue().endswith("\033[?25h\n"))

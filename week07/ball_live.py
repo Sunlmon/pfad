@@ -25,7 +25,7 @@ class Simulation:
         self.ready = Event()
         self.thread = None
         self.revision = 0
-        self.status = "Save ball.py to reload both views."
+        self.status = "Save ball.py to reload."
         self.failed = False
         self.reload()
         if watch:

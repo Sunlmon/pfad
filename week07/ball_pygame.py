@@ -2,20 +2,18 @@
 # requires-python = ">=3.10,<3.14"
 # dependencies = ["pygame==2.6.1", "watchfiles==1.3.0"]
 # ///
-"""Two windows, one simulation: Pygame here, ASCII in this terminal."""
+"""A graphical view of the shared Ball physics model."""
 
 if __package__:
     from .ball_live import Simulation
-    from .ball_play import AsciiView
 else:
     from ball_live import Simulation
-    from ball_play import AsciiView
 
 SIZE = (960, 680)
 COLORS = ((255, 116, 83), (109, 208, 221))
 
 
-def main():
+def main(show_ascii=False):
     import pygame
 
     pygame.init()
@@ -25,7 +23,14 @@ def main():
     font = pygame.font.Font(None, 26)
     heading = pygame.font.Font(None, 38)
     simulation = Simulation()
-    ascii_view = AsciiView()
+    ascii_view = None
+    if show_ascii:
+        if __package__:
+            from .ball_play import AsciiView
+        else:
+            from ball_play import AsciiView
+        ascii_view = AsciiView()
+    last_status = None
     paused = False
     running = True
 
@@ -52,7 +57,8 @@ def main():
             screen.fill((21, 35, 38))
             pygame.draw.rect(screen, (28, 46, 50), arena)
             pygame.draw.rect(screen, (112, 133, 128), arena, 2)
-            screen.blit(heading.render("One model. Two views.", True, (242, 238, 221)), (28, 20))
+            title = "One model. Two views." if show_ascii else "Ball physics"
+            screen.blit(heading.render(title, True, (242, 238, 221)), (28, 20))
             for index, ball in enumerate(simulation.balls):
                 center = (round(arena.left + ball.x * scale), round(arena.top + ball.y * scale))
                 radius = max(2, round(ball.radius * scale))
@@ -60,22 +66,27 @@ def main():
                 pygame.draw.circle(screen, (242, 238, 221),
                                    (center[0] - radius // 3, center[1] - radius // 3), max(1, radius // 5))
 
-            controls = "Space: pause / resume   R: reset   Save ball.py: reload both views"
+            controls = "Space: pause / resume   R: reset   Save ball.py: reload"
             screen.blit(font.render(controls, True, (242, 238, 221)), (28, height - 69))
             state = "PAUSED" if paused else "MOVING"
             status = f"{state} / frame {simulation.ticks} / revision {simulation.revision}"
             screen.blit(font.render(status, True, (255, 217, 117)), (28, height - 42))
             if "Error:" in simulation.status:
                 pygame.display.set_caption("Ball physics | edit error: see terminal")
+                if ascii_view is None and simulation.status != last_status:
+                    print(simulation.status)
             else:
                 pygame.display.set_caption("Ball physics | SD5913 Week 7")
-            ascii_view.draw(simulation)
+            last_status = simulation.status
+            if ascii_view is not None:
+                ascii_view.draw(simulation)
             pygame.display.flip()
     except KeyboardInterrupt:
         pass
     finally:
         simulation.close()
-        ascii_view.close()
+        if ascii_view is not None:
+            ascii_view.close()
         pygame.quit()
 
 

@@ -42,7 +42,7 @@ velocity at a wall or floor. Coordinates start at the top left, so increasing
 ### 2. One moving model, two ways to draw it
 
 ```bash
-uv run week07/ball_pygame.py
+uv run week07/ball_both.py
 ```
 
 Keep the terminal visible beside the graphical window. The terminal draws
@@ -70,13 +70,23 @@ an error encountered later freezes the last valid state. Read the terminal's
 error message, fix the code and save again to recover.
 
 In the graphical window, **Space** pauses/resumes and **R** resets. Closing it
-or pressing **Ctrl+C** in the terminal stops both views. For animated ASCII
-alone, use `uv run week07/ball_play.py`; Ctrl+C stops it. No display, API key or
-model download is needed for the ASCII version.
+or pressing **Ctrl+C** in the terminal stops both views. Each renderer can also
+run by itself:
+
+```bash
+uv run week07/ball_play.py      # ASCII only; Ctrl+C stops it
+uv run week07/ball_pygame.py    # Pygame only; close the window to stop
+uv run week07/ball_both.py      # both views, synchronized
+```
+
+All three watch the same `ball.py` and reload on save. Starting the renderers
+separately gives each its own simulation clock; use `ball_both.py` to keep them
+exactly in sync. No display, API key or model download is needed for ASCII.
 
 Focus on `ball.py` during the explanation. [ball_live.py](ball_live.py) supplies
 the simulation clock and reload support; [ball_play.py](ball_play.py) and
-[ball_pygame.py](ball_pygame.py) supply the renderers. They are supporting code
+[ball_pygame.py](ball_pygame.py) supply the renderers; [ball_both.py](ball_both.py)
+starts the synchronized pair. They are supporting code
 to explore later, not additional theory for today's lecture. Offline checks
 run with `uv run week07/test_examples.py`.
 
