@@ -27,8 +27,11 @@ for the finished work; check Canvas for the assignment and its actual settings.
   chosen platforms and any limitations. A link to a live deployment or a
   downloadable build helps when appropriate.
 - Visible participation by the team: meaningful contributions, small commits
-  and a record of weekly progress. Keep a short shared progress record when the
-  repository history alone does not explain the work.
+  and a record of weekly progress. Show shared planning, task ownership,
+  review/test evidence and how the next plan changes as you learn. GitHub
+  Projects and Issues are recommended; an equivalent accessible shared record
+  is valid. Link your board and progress notes from the README, and ensure the
+  instructor can access them. See the [Week 8 teamwork guide](../week08/teamwork.md).
 - Credits for code, assets, data and tools, including how AI tools were used.
   Use original or appropriately licensed material.
 - Instructions for configuring any required secrets. Never commit or submit
@@ -47,7 +50,13 @@ The group project is **40% of the course grade**. Its own mark is divided into:
 | --- | ---: | --- |
 | Creative idea | 25% | Novelty and value of the idea. |
 | Code | 50% | The project works, meets the requirements and handles complexity well. |
-| Execution | 25% | Small, steady increments and documented weekly progress. |
+| Execution | 25% | Small, steady increments and documented weekly progress, evidenced by shared planning, team contributions, review and adaptation. |
+
+The execution criterion assesses how the team develops the project over time.
+Use brief weekly goals, completed work, feedback, blockers and next steps to
+explain the evidence. Raw commit/card counts, formal Scrum titles and ceremony
+attendance are not the criteria. This is ongoing documentation linked from the
+same repository; it does not introduce an additional Canvas upload.
 
 ## Submit
 

@@ -5,6 +5,11 @@ and uses OpenCV and MediaPipe's current **Tasks** API. The nine exercises
 follow the topics in the [2025 examples](https://github.com/sd5913/pfad/tree/2025/week08),
 rewritten for MediaPipe 1.2.0. No instructor ClassPoint login is needed.
 
+The lecture's Agile/Scrum concepts are quiz material. See the
+[teamwork and GitHub tracking guide](teamwork.md) for revision and for making
+your team's progress visible under the group project's 25% execution criterion.
+The camera tutorial below still covers all nine vision examples.
+
 ## Before you start: 0–15 minutes
 
 Work with a partner and ask before pointing a camera at anyone. These examples
