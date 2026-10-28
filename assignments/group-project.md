@@ -4,6 +4,10 @@
 
 **Final deadline:** Sunday 6 December 2026, 23:59 Hong Kong time
 
+**Repository requirement:** Your group must use one shared **public repository
+owned by the [sd5913 organization](https://github.com/sd5913)**. The repository
+URL must start with `https://github.com/sd5913/`.
+
 Make an original app, game, installation or other interactive project with your
 team. Build something a person can use or experience: explain who it is for,
 what they do, and how your project responds. Include multimedia appropriate to
@@ -95,7 +99,9 @@ same repository; it does not introduce an additional Canvas upload.
 
 ## Submit
 
-Submit the shared GitHub repository URL using the Canvas assignment's Website
-URL submission. Ensure the final repository and its README remain accessible for
-assessment by **Sunday 6 December 2026, 23:59 HKT**. Follow the actual Canvas
-group submission instructions. This is separate from individual Assignment 3.
+Submit your group's **sd5913-owned repository URL** using the Canvas assignment's
+Website URL submission, for example `https://github.com/sd5913/group-your-project`.
+Check that the repository owner is **sd5913** and all teammates have write access.
+Ensure the final repository and its README remain accessible for assessment by
+**Sunday 6 December 2026, 23:59 HKT**. Follow the actual Canvas group submission
+instructions. This is separate from individual Assignment 3.
