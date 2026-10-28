@@ -119,12 +119,11 @@ group repository and its board in the [sd5913 organization](https://github.com/s
 
 ### Then, connect the board, issues and pull requests
 
-1. **Create a Project from the course template.** Open **sd5913 > Projects >
-   New project**, choose **Group Project 2026** from the organization's
-   templates, and name your copy after your group project. You can inspect the
-   [course template here](https://github.com/orgs/sd5913/projects/1). It includes
-   weekly iterations, a status board and dated tutor review cards. Work in your
-   group's copy. Give teammates **Write** access in the Project's
+1. **Use the course Project template.** Open
+   [Group Project 2026](https://github.com/orgs/sd5913/projects/1), click
+   **Use this template**, choose **sd5913** as the owner and name the new
+   Project after your group project. It includes weekly iterations, a status
+   board and dated tutor review cards. Give teammates **Write** access in the Project's
    settings; set this Project's base access for organization members to **Read**
    or **No access** so editing is limited to your group and project
    administrators. Link the Project from your repository's Projects tab and

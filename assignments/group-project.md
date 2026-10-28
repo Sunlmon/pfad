@@ -69,9 +69,9 @@ or question. Record the tutor's feedback and the next goal with owners. Adapt
 the scope to your project with your tutor. These records support the existing
 execution criterion; there is no additional Canvas upload or grade component.
 
-Create your group's GitHub Project from the
-[Group Project 2026 template](https://github.com/orgs/sd5913/projects/1) under
-**sd5913**. It includes weekly iterations and dated delivery cards. Link your
+Open the [Group Project 2026 template](https://github.com/orgs/sd5913/projects/1),
+click **Use this template**, and choose **sd5913** as the owner. It includes
+weekly iterations and dated delivery cards. Name the Project for your group, link your
 repository, give teammates Write access and link the board from your README;
 see the [teamwork guide](../week08/teamwork.md#4-weekly-delivery-meetings-with-your-tutor).
 An equivalent accessible shared record remains valid. The final Canvas deadline
