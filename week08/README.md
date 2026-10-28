@@ -1,125 +1,192 @@
-# Week 8 — one piece that works (Thu 29 Oct 2026)
+# Week 8: cameras, landmarks and your group project
 
-Bring your [Week 7 idea and mock-up](../week07/README.md). Today your team
-will choose one small interaction, make a change reviewable, distinguish two
-kinds of project setup, and map one hand landmark to a tile response. These are
-working notes, **not a new assessed submission**. Ask your instructor about
-team scope under the current project brief; do not invent a new deadline.
+**Thursday 29 October 2026.** This two-hour tutorial follows the live lecture
+and uses OpenCV and MediaPipe's current **Tasks** API. The nine exercises
+follow the topics in the [2025 examples](https://github.com/sd5913/pfad/tree/2025/week08),
+rewritten for MediaPipe 1.2.0. No instructor ClassPoint login is needed.
 
-## 1. Team plan and pull request
+## Before you start: 0–15 minutes
 
-1. Name a visitor, one action, and one visible response. Example: "When the
-   visitor's index fingertip moves left, the blue tile lights up; when it moves
-   right, the red tile lights up." Agree what happens with no hand in view.
-2. Put the smallest working slice first: draw tiles, map a coordinate, show
-   feedback, ask a teammate to test; defer extra gestures, sounds, and other
-   features to a backlog. Call the working slice an **increment**. Use these
-   Scrum terms to communicate, not as mandatory new team roles.
-3. On a small feature branch in **your team's repo**, commit one focused change
-   and open a pull request. State what changed, how to run it, what you actually
-   tested, and what remains untested. A teammate reviews the code **and tries
-   the interaction**. Resolve conflicts together and test again after merging.
-   A green PR check is not proof of a usable visitor experience. See the
-   [Git reference](../reference/git.md); this exercise does not ask you to
-   merge or publish the course repository.
+Work with a partner and ask before pointing a camera at anyone. These examples
+process frames locally; do not record or upload anyone's image. You need a
+laptop with a camera, a graphical desktop, internet for first-time setup, and
+[uv](https://docs.astral.sh/uv/getting-started/installation/). Windows x64/ARM,
+macOS Apple Silicon, and Linux x64/ARM have MediaPipe 1.2.0 wheels. Intel Macs
+are not supported by that release; pair with someone on a supported machine.
 
-An earlier [two-object class trace](tile_demo.py) remains available:
-`python -B week08/tile_demo.py` prints `Before: blue=False, red=False` then
-`After:  blue=True, red=False`. It models independent object state, **not**
-a clickable UI or hand tracking. This week's visible interaction is below.
+From the **PFAD repository root**, run:
 
-## 2. Safe, repeatable setup (no accounts or real keys needed)
+```bash
+uv run --locked --project week08 python week08/download_models.py
+uv run --locked --project week08 python week08/vision.py camera
+```
 
-Swap run instructions with a teammate: working directory, exact command,
-packages, safe inputs, expected output, and how to stop. Never paste a real
-credential, private roster, or camera frame into a public repo, PR, prompt,
-log, or screenshot. The tile sample needs only Python 3 and no key. Discuss
-these two separate services with **fake values only**; don't create a secret,
-environment, account, or deployment for this exercise:
+`uv` obtains Python 3.13 and the pinned dependencies in the separate
+`week08/.venv`; it does not replace PFAD's root environment. The first command
+downloads Google's model files into ignored `week08/models/`. The second opens a
+mirrored camera preview using OpenCV. Focus the window and press **q** to quit.
+If camera 0 is unavailable, add `--camera 1` to a command. Grant camera access in
+your OS settings; close Zoom or other camera apps. On a remote/headless machine,
+use a partner's laptop with a display. Never commit models or frames.
 
-| Question | GitHub Actions environment | Codex cloud environment |
-|---|---|---|
-| Where? | Repository's **Settings → Environments** (admin permissions may be needed) | Codex cloud settings for a connected repo, if your team actually uses Codex cloud |
-| What for? | Deployment protection rules and environment-scoped variables/secrets used by **jobs** that reference that environment | Reproducible cloud task runtime: setup commands, dependencies, variables, and separately managed secrets for a Codex **agent task** |
-| How is a value used? | A workflow job explicitly declares `environment: demo`; its steps can reference `secrets.DEMO_TOKEN` if an admin has separately configured it | A Codex cloud task uses the settings of its selected cloud environment; this does **not** configure a GitHub Actions job |
-| Here? | Paper example only: `DEMO_TOKEN=NOT_A_REAL_TOKEN` | Paper example only: `DEMO_TOKEN=NOT_A_REAL_TOKEN` |
+Open [vision.py](vision.py). `cv2.VideoCapture` gets frames, OpenCV converts BGR
+to RGB, a MediaPipe Task processes an `mp.Image`, and our code draws output.
+`VIDEO` mode takes an increasing timestamp. The six model tasks run locally.
 
-A GitHub workflow file does **not** contain the secret's value. Environment
-secrets are not available to a job until its environment's protection rules,
-if any, pass. Conversely, creating a Codex cloud environment does not grant
-GitHub Actions access to its settings, and neither service gives an agent
-permission to use a tool just because it is installed. Don't expose secrets
-to untrusted pull-request code. For the real project, ask your team which
-service (if either) is used and who can manage its settings; use only the
-minimum access necessary. Our offline example below uses **neither** service.
+Each command below is run from the repository root. First predict, then run,
+observe and try the change. Press **q** before starting the next example. In a
+terminal, **Ctrl+C** is a fallback if a window fails. If an example is slow,
+close other apps, improve lighting and try a single model first. No detection
+is a valid result: it should not crash your interaction.
 
-References: [GitHub: managing environments](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments),
-[GitHub: using secrets in workflows](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets),
-[OpenAI: Codex cloud](https://developers.openai.com/codex/cloud).
-Settings and availability can vary by plan or organisation; check current
-provider guidance rather than assuming everyone has an account.
+## 1. Face detection: 15–23 minutes
 
-## 3. Hand → coordinate → tile
+```bash
+uv run --locked --project week08 python week08/vision.py face
+```
 
-[Open `hand_tiles.py`](hand_tiles.py). It uses the MediaPipe **Hand Landmarker
-Task** only in explicit camera mode. The first detected hand's **index
-fingertip, landmark 8**, has a normalized horizontal coordinate `x`.
-We mirror the camera frame so moving your hand left selects blue. Both paths
-call the same `tile_for_x(x)` function:
+Expect a yellow box around a detected face. Move farther away or partly cover
+your face: when does the box disappear? Find `bounding_box` in the code. Change
+the box colour in `cv2.rectangle`, run it, and restore it. A face box is a
+location estimate; it does not identify a person.
 
-| `x` | Visible response |
-|---|---|
-| `0 <= x < 0.5` | highlight `[ BLUE ]`; red is plain |
-| `0.5 <= x <= 1` | highlight `[ RED ]`; blue is plain |
-| no hand, invalid or out-of-range coordinate | neither selected; show `no input` immediately |
+## 2. Hand landmarks: 23–32 minutes
 
-**First, no camera or installation.** From the `pfad` repo root:
+```bash
+uv run --locked --project week08 python week08/vision.py hand
+```
+
+Expect points on up to two hands. Look for index fingertip **landmark 8**. Move
+one hand out of view, then rotate it and cover fingers; notice missed points.
+Change the dot radius in `draw_points` and predict its effect. In the lecture's
+[hand-to-tile example](hand_tiles.py), x below 0.5 selects blue, x at or above
+0.5 selects red, and no hand selects neither:
 
 ```bash
 python -B week08/hand_tiles.py
-python -B -m unittest discover -s week08 -p 'test_*.py'
+uv run --locked --project week08 python week08/hand_tiles.py --camera --model week08/models/hand.task
 ```
 
-If `python` isn't Python 3 use `python3` (or `py -3` on Windows). The five
-built-in test coordinates are `0.20, 0.49, 0.50, 0.80, None` and are not
-camera data or MediaPipe predictions. Expect blue, blue, red, red, then
-`no input` in the terminal's visible tile strip. In particular `0.50` is red.
-The tests use only the standard library; no device, model, network, packages,
-or permission prompt. Change one sample coordinate (for example, `0.49` to
-`0.51`), predict the result, run again, and restore it. The terminal strip
-is a deliberately simple visible tile display, not a window or a gesture
-recognizer. Try a different threshold in `tile_for_x` **and its tests** if
-your design calls for it.
+The first command uses sample coordinates and no camera. The second uses the
+camera. Mirror direction and camera framing affect the mapping.
 
-**Optional local webcam on a machine with a camera and graphical desktop.**
-Ask permission before pointing a camera at anyone. Install packages in your
-own isolated Python 3.12 environment, and obtain the model from the
-[Google Hand Landmarker guide](https://developers.google.com/edge/mediapipe/solutions/vision/hand_landmarker/python)
-([Google sample model download](https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task)).
-Place the downloaded `.task` **outside your repo**, then run from the repo
-root, replacing the path with your own downloaded file:
+## 3. Pose landmarks: 32–40 minutes
 
 ```bash
-uv run --no-project --python 3.12 --with mediapipe --with opencv-python --with numpy week08/hand_tiles.py --camera --model /path/outside/pfad/hand_landmarker.task
+uv run --locked --project week08 python week08/vision.py pose
 ```
 
-This optional command requires `uv`, network for first-time package install,
-a compatible desktop/webcam, camera permission, and a **manually downloaded**
-model. It never downloads a model by itself. `--camera` is the only path that
-opens the camera. The local window shows only the coloured tile display, not
-the video feed; press `q` in that window to release the camera. Code does not
-write frames, record audio/video, or upload anything. Close other apps using
-the camera if it cannot open. Camera hardware and MediaPipe's inference are
-**not** exercised by the offline tests or CI. If you cannot or do not wish to
-use a camera, use the sample command and describe that limitation honestly.
+Expect green body points. Step back so your body is visible, then cover an arm.
+Find `pose_landmarks`. Which points move when you bend an elbow? The 2025
+[pose example](https://github.com/sd5913/pfad/blob/2025/week08/3_pose_estimation.py)
+calculates an arm angle; predict what would happen to that angle if the elbow
+straightens. A point behind your body may be inaccurate.
 
-Talk it through: where is the input acquired, which line extracts landmark 8,
-which function maps both kinds of `x`, and where is the response drawn? Have a
-teammate try the no-camera command; ask them whether `no input` is clear enough
-without labels or sound. A visitor test is still needed for your own project.
+## 4. Face mesh: 40–50 minutes
 
-## Sources and scope
+```bash
+uv run --locked --project week08 python week08/vision.py mesh
+```
 
-- [Google Hand Landmarker Python guide](https://developers.google.com/edge/mediapipe/solutions/vision/hand_landmarker/python): Tasks API, 21 landmarks per hand, normalized image coordinates, video mode. Historical [2025 Week 8](https://github.com/sd5913/pfad/tree/2025/week08) offers broader vision examples but is not the required 2026 setup.
-- The older Week 8 PDF covered team workflow, branches, containers and vision; it is background, not a 2026 deadline or a Docker/Compose requirement. The former container paper trace is **not** part of this Week 8 core.
-- The [PR checks](../.github/workflows/upcoming-practicals.yml) run these offline tests; they do not install MediaPipe, access the camera, set secrets, deploy, or publish this course.
+Expect many cyan face points. Move your head and compare the points around the
+mouth and eyes. Change the dot radius and observe whether the detail becomes
+clearer. Turn sideways or remove your face from view: is the output stable?
+These are geometry estimates, not an identity check.
+
+## 5. Gesture recognition: 50–60 minutes
+
+```bash
+uv run --locked --project week08 python week08/vision.py gesture
+```
+
+Expect hand points and a trained gesture label with a score when a hand is
+recognized. Try an open palm, fist, and a rotated hand. Predict which gestures
+will still work; do not treat a score as a person's intention. This Tasks
+Gesture Recognizer uses a trained classifier. Contrast the 2025
+[handwritten coordinate rules](https://github.com/sd5913/pfad/blob/2025/week08/5_gesture_recognition.py):
+find one comparison and discuss how hand orientation might break it.
+
+**Break: 60–70 minutes.** Press q and release the camera.
+
+## 6. Combined detection: 70–80 minutes
+
+```bash
+uv run --locked --project week08 python week08/vision.py holistic
+```
+
+Expect a face box plus hand and pose points on the same frame. This version
+combines separate Tasks; it is not a claim that the old Holistic solution is
+still the same API. Cover one hand and see which output remains. In `MODES`,
+remove `"face"` from `holistic`, predict what disappears, run, and restore it.
+
+## 7. Segmentation: 80–90 minutes
+
+```bash
+uv run --locked --project week08 python week08/vision.py segment
+```
+
+Expect your foreground over a coloured background. Unlike landmarks, a mask
+estimates pixels belonging to a person. Move hair or hands near the edge. Change
+`mask > 0.5` to `mask > 0.7`, predict the edge change, run, and restore it.
+Segmentation can miss transparent objects and fine details.
+
+## 8. Multiple detectors: 90–100 minutes
+
+```bash
+uv run --locked --project week08 python week08/vision.py multi
+```
+
+Expect segmentation, a face box, hands and pose together. Compare the speed
+with `hand` alone. Remove one task from `MODES["multi"]` and compare; restore
+it afterwards. Running many models has a cost; a slow laptop may be better
+served by choosing just one input.
+
+## 9. Expression classifier: 100–110 minutes
+
+```bash
+uv run --locked --project week08 --group emotion python week08/vision.py emotion
+```
+
+This installs the additional EmotiEffLib/ONNX dependencies and downloads its
+model on first use. MediaPipe finds a face; a **separate** classifier displays
+one label from its trained categories. Try different expressions and lighting;
+compare labels without asking anyone to disclose feelings. The output is a
+model prediction from an image, **not evidence of someone's inner feelings**,
+identity, truthfulness, or wellbeing. The model can be wrong and performance
+can vary across people and conditions. If the extra model cannot download, read
+[the 2025 classifier](https://github.com/sd5913/pfad/blob/2025/week08/9_emotion_detection.py)
+and trace detector → face crop → classifier → label with a partner. The modern
+`expression` mode shows a MediaPipe facial blendshape score as an alternative;
+it also cannot determine a person's emotion.
+
+## 10. Apply it to your project: 110–120 minutes
+
+Pick one input your team could use. Describe the user action, response, how you
+will test it, and what happens when tracking fails. Computer vision is optional
+for the group project. Submit your shared repository URL on Canvas as soon as
+it exists, then continue working: [group project brief](../assignments/group-project.md).
+Final deadline: **Sunday 6 December 2026, 23:59 HKT**.
+
+If time permits, create a team repository from the
+[Capacitor app starter](https://github.com/sd5913/capacitor-app-template) or
+[Godot game starter](https://github.com/sd5913/godot-game-template). Follow its
+README to create a Codex cloud environment, make a small change and inspect its
+GitHub Actions artifact. This team work is optional and does not replace the
+vision tutorial. A cloud environment, an Actions runner and a hosted deployment
+are separate services. Never paste a real token into a repo, prompt or chat.
+
+## Troubleshooting and references
+
+- `Missing ...models`: rerun the download command with internet; a failed
+  download can be retried. Models are not committed to Git.
+- `Cannot open camera`: grant OS permission, close other camera apps, try
+  `--camera 1`, or share a partner's computer. Focus the preview before `q`.
+- Window does not open over SSH: use a local graphical session. Use the sample
+  coordinate command above if you have no camera.
+- On a first run allow time for Python, dependencies and model downloads. If
+  tracking flickers, improve light and distance; inspect the no-detection case.
+- [MediaPipe Tasks Python guide](https://ai.google.dev/edge/mediapipe/solutions/guide)
+  and [Hand Landmarker](https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker/python).
+- [2025 archive](https://github.com/sd5913/pfad/tree/2025/week08) retains the
+  original `mp.solutions` scripts and their different dependencies; do not mix
+  those instructions with this environment.
