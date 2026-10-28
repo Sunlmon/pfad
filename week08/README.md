@@ -25,7 +25,8 @@ uv run --locked --project week08 python week08/vision.py camera
 `week08/.venv`; it does not replace PFAD's root environment. The first command
 downloads Google's model files into ignored `week08/models/`. The second opens a
 mirrored camera preview using OpenCV. Focus the window and press **q** to quit.
-If camera 0 is unavailable, add `--camera 1` to a command. Grant camera access in
+If camera 0 is unavailable, add `--camera 1` to a `vision.py` command, or
+`--camera-index 1` to the hand-to-tile camera command. Grant camera access in
 your OS settings; close Zoom or other camera apps. On a remote/headless machine,
 use a partner's laptop with a display. Never commit models or frames.
 

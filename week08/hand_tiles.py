@@ -31,7 +31,7 @@ def sample_demo():
         print(f"x={x!s:>4} -> {tile_line(x)}")
 
 
-def camera_demo(model_path):
+def camera_demo(model_path, camera_index=0):
     if not model_path.is_file():
         raise ValueError(f"Model not found: {model_path}")
     try:
@@ -47,10 +47,10 @@ def camera_demo(model_path):
         running_mode=mp.tasks.vision.RunningMode.VIDEO,
         num_hands=1,
     )
-    camera = cv2.VideoCapture(0)
+    camera = cv2.VideoCapture(camera_index)
     if not camera.isOpened():
         camera.release()
-        raise RuntimeError("Camera 0 unavailable; try the sample mode instead")
+        raise RuntimeError(f"Camera {camera_index} unavailable; try another index or sample mode")
 
     try:
         with mp.tasks.vision.HandLandmarker.create_from_options(options) as tracker:
@@ -96,11 +96,12 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--camera", action="store_true", help="opt in to local webcam")
     parser.add_argument("--model", type=Path, help="downloaded hand_landmarker.task")
+    parser.add_argument("--camera-index", type=int, default=0, help="camera device index (default 0)")
     args = parser.parse_args(argv)
     if args.camera:
         if args.model is None:
             parser.error("--camera requires --model PATH; no automatic download")
-        camera_demo(args.model)
+        camera_demo(args.model, args.camera_index)
     elif args.model is not None:
         parser.error("--model only applies with --camera")
     else:

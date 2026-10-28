@@ -3,6 +3,8 @@
 import subprocess
 import sys
 import unittest
+from unittest.mock import patch
+import hand_tiles
 from pathlib import Path
 
 from hand_tiles import SAMPLE_X, tile_for_x, tile_line
@@ -33,6 +35,11 @@ class HandTilesTest(unittest.TestCase):
             *(f"x={x!s:>4} -> {tile_line(x)}" for x in SAMPLE_X),
         ])
         self.assertEqual(run.stderr, "")
+
+    def test_camera_device_is_forwarded(self):
+        with patch.object(hand_tiles, "camera_demo") as camera:
+            hand_tiles.main(["--camera", "--model", "model.task", "--camera-index", "1"])
+        camera.assert_called_once_with(Path("model.task"), 1)
 
     def test_camera_cannot_start_without_explicit_model(self):
         script = Path(__file__).with_name("hand_tiles.py")
