@@ -169,8 +169,9 @@ it exists, then continue working: [group project brief](../assignments/group-pro
 Final deadline: **Sunday 6 December 2026, 23:59 HKT**.
 
 If time permits, create a team repository from the
-[Capacitor app starter](https://github.com/sd5913/capacitor-app-template) or
-[Godot game starter](https://github.com/sd5913/godot-game-template). Follow its
+[Capacitor app starter](https://github.com/sd5913/capacitor-app-template),
+[Godot game starter](https://github.com/sd5913/godot-game-template), or
+[Python + uv app starter](https://github.com/sd5913/python-uv-app-template). Follow its
 README to create a Codex cloud environment, make a small change and inspect its
 GitHub Actions artifact. This team work is optional and does not replace the
 vision tutorial. A cloud environment, an Actions runner and a hosted deployment
