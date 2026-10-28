@@ -95,10 +95,38 @@ supports table, board and roadmap views of issues and pull requests. Use a
 shared board to make plans and progress visible. It supports your process;
 creating a board alone does not establish Scrum.
 
-1. **Create a Project.** Under your GitHub user or organization, open Projects,
-   create a project and use a Board view. Link the project from your repository
-   so teammates can find it. Check project access separately from repository
-   access, including whether the instructor can view your evidence.
+### First, join the course organization and create the shared repository
+
+GitHub supports personal-account Projects too. For this course, keep your
+group repository and its board in the [sd5913 organization](https://github.com/sd5913).
+
+1. Accept the organization's invitation while signed into the GitHub account
+   you registered at [pfad.ait4x.org](https://pfad.ait4x.org). If it is missing
+   or expired, ask the instructor to check your registration and resend it.
+2. One teammate creates a **public** repository, choosing **Owner: sd5913** and
+   a distinct project name, for example `group-your-project`. You can start from
+   an empty repository or one of the course templates. Check the resulting URL
+   begins `https://github.com/sd5913/`. If `sd5913` is not an Owner option, check
+   that the invitation was accepted before continuing.
+3. The repository administrator adds the other teammates with **Write** access
+   under **Settings > Collaborators and teams**. Each teammate should check
+   they can push a branch. Being an organization member alone does not give
+   write access to every course repository.
+4. If the team already has a personal repository, ask the instructor to help
+   transfer it into `sd5913` and preserve its commits, issues and PRs. Keep the
+   project's history instead of starting again; update its local remote and
+   Canvas URL after the transfer.
+
+### Then, connect the board, issues and pull requests
+
+1. **Create a Project.** Open **sd5913 > Projects**, create a project for your
+   group and use a Board view. Give teammates **Write** access in the Project's
+   settings; set this Project's base access for organization members to **Read**
+   or **No access** so editing is limited to your group and project
+   administrators. Link the Project from your repository's Projects tab and
+   README. Project access and
+   repository access are separate; check both with a teammate and ensure the
+   instructor can view your evidence.
 2. **Create repository issues.** Give each task a concrete outcome, an assignee
    and acceptance checks. For example: "Start button opens the first level";
    check that a teammate can launch the project and use the button.

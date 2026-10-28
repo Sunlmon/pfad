@@ -174,6 +174,11 @@ discuss an input, a response and what could happen when tracking fails. This is
 an optional prompt: there is no requirement to use computer vision or change
 your project idea. Submit your shared repository URL on Canvas as soon as it
 exists, then continue working: [group project brief](../assignments/group-project.md).
+Use one public repository owned by **sd5913** for the group. Accept the course
+organization invitation first, then choose **Owner: sd5913** when creating it.
+The [teamwork guide](teamwork.md#3-track-the-work-in-github) explains membership,
+teammate permissions and a matching GitHub Projects board. Ask the instructor
+for help transferring a repository you have already started.
 Final deadline: **Sunday 6 December 2026, 23:59 HKT**.
 
 Curious about other platforms? Try Google's [hand tracking example in the browser](https://stackblitz.com/github/google-ai-edge/mediapipe-samples-web?file=src%2Ftasks%2Fhand-landmarker.ts)

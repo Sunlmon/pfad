@@ -13,11 +13,19 @@ not have to contain AI.
 
 ## Begin this week
 
-Create one shared GitHub repository and give your teammates access. Submit its
-**repository URL on Canvas** as soon as it exists; an initial README is enough to
-register the project. Keep developing the same repository after submitting it.
-Make sure the instructor can access the repository. The final deadline above is
-for the finished work; check Canvas for the assignment and its actual settings.
+Accept your invitation to the [sd5913 organization](https://github.com/sd5913).
+Create one shared **public repository owned by `sd5913`**, for example
+`sd5913/group-your-project`, and give your teammates write access. When creating
+a repository from a starter template, choose **Owner: sd5913**. If the
+organization is missing from the Owner menu, ask the instructor to check your
+invitation and membership.
+
+Submit its **repository URL on Canvas** as soon as it exists; an initial README
+is enough to register the project. Keep developing the same repository after
+submitting it. If your team has already started in a personal repository, ask
+the instructor to help transfer it into `sd5913` while preserving its history.
+The final deadline above is for the finished work; check Canvas for the
+assignment and its actual settings.
 
 ## What the repository should show
 
