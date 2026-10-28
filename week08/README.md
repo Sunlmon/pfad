@@ -162,13 +162,21 @@ and trace detector → face crop → classifier → label with a partner. The mo
 `expression` mode shows a MediaPipe facial blendshape score as an alternative;
 it also cannot determine a person's emotion.
 
-## 10. Apply it to your project: 110–120 minutes
+## 10. Inspiration and project time: 110–120 minutes
 
-Pick one input your team could use. Describe the user action, response, how you
-will test it, and what happens when tracking fails. Computer vision is optional
-for the group project. Submit your shared repository URL on Canvas as soon as
-it exists, then continue working: [group project brief](../assignments/group-project.md).
+Could any of today's ideas inspire your game, app or installation? If useful,
+discuss an input, a response and what could happen when tracking fails. This is
+an optional prompt: there is no requirement to use computer vision or change
+your project idea. Submit your shared repository URL on Canvas as soon as it
+exists, then continue working: [group project brief](../assignments/group-project.md).
 Final deadline: **Sunday 6 December 2026, 23:59 HKT**.
+
+Curious about other platforms? Try Google's [hand tracking example in the browser](https://stackblitz.com/github/google-ai-edge/mediapipe-samples-web?file=src%2Ftasks%2Fhand-landmarker.ts)
+and see the [JavaScript web guide](https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker/web_js).
+MediaPipe also provides [Android](https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker/android)
+and [iOS](https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker/ios)
+guides and native samples. These are optional starting points, not the Python
+tutorial; browser camera access requires permission and a supported browser.
 
 If time permits, create a team repository from the
 [Capacitor app starter](https://github.com/sd5913/capacitor-app-template),
