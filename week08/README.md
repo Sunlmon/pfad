@@ -179,6 +179,12 @@ organization invitation first, then choose **Owner: sd5913** when creating it.
 The [teamwork guide](teamwork.md#3-track-the-work-in-github) explains membership,
 teammate permissions and a matching GitHub Projects board. Ask the instructor
 for help transferring a repository you have already started.
+For your board, choose the organization's
+[Group Project 2026 template](https://github.com/orgs/sd5913/projects/1). Its
+weekly iterations and dated tutor review cards cover the class weeks of
+**5, 12, 19 and 26 November, and 3 December**. Meet your assigned tutor in your
+scheduled tutorial slot that week; record a usable delivery, feedback and the
+next goal. See the [delivery meeting guide](teamwork.md#4-weekly-delivery-meetings-with-your-tutor).
 Final deadline: **Sunday 6 December 2026, 23:59 HKT**.
 
 Curious about other platforms? Try Google's [hand tracking example in the browser](https://stackblitz.com/github/google-ai-edge/mediapipe-samples-web?file=src%2Ftasks%2Fhand-landmarker.ts)

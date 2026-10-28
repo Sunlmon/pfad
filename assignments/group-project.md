@@ -50,6 +50,33 @@ downloadable application, game or installation can all be appropriate; app
 stores and a particular framework are not mandatory. Test the actual experience
 with another person, not just the build command.
 
+## Weekly tutor deliveries
+
+Meet your assigned tutor during your scheduled tutorial slot in each remaining
+teaching week. These are the Thursday class-week dates; your tutor confirms the
+exact meeting time.
+
+| Class week | Delivery focus |
+| --- | --- |
+| 5 November 2026 | First working interaction |
+| 12 November 2026 | Integrated core experience |
+| 19 November 2026 | Playtest and feedback |
+| 26 November 2026 | Delivery candidate: build, deployment or installation setup |
+| 3 December 2026 | Final tutor delivery review |
+
+Bring a usable increment, relevant test/playtest evidence and your main blocker
+or question. Record the tutor's feedback and the next goal with owners. Adapt
+the scope to your project with your tutor. These records support the existing
+execution criterion; there is no additional Canvas upload or grade component.
+
+Create your group's GitHub Project from the
+[Group Project 2026 template](https://github.com/orgs/sd5913/projects/1) under
+**sd5913**. It includes weekly iterations and dated delivery cards. Link your
+repository, give teammates Write access and link the board from your README;
+see the [teamwork guide](../week08/teamwork.md#4-weekly-delivery-meetings-with-your-tutor).
+An equivalent accessible shared record remains valid. The final Canvas deadline
+is **6 December, 23:59 HKT**; it is separate from the tutor meetings.
+
 ## How it is marked
 
 The group project is **40% of the course grade**. Its own mark is divided into:

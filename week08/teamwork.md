@@ -119,14 +119,19 @@ group repository and its board in the [sd5913 organization](https://github.com/s
 
 ### Then, connect the board, issues and pull requests
 
-1. **Create a Project.** Open **sd5913 > Projects**, create a project for your
-   group and use a Board view. Give teammates **Write** access in the Project's
+1. **Create a Project from the course template.** Open **sd5913 > Projects >
+   New project**, choose **Group Project 2026** from the organization's
+   templates, and name your copy after your group project. You can inspect the
+   [course template here](https://github.com/orgs/sd5913/projects/1). It includes
+   weekly iterations, a status board and dated tutor review cards. Work in your
+   group's copy. Give teammates **Write** access in the Project's
    settings; set this Project's base access for organization members to **Read**
    or **No access** so editing is limited to your group and project
    administrators. Link the Project from your repository's Projects tab and
    README. Project access and
    repository access are separate; check both with a teammate and ensure the
-   instructor can view your evidence.
+   instructor can view your evidence. Collaborators and repository links are
+   not copied from the template, so add them to your new Project.
 2. **Create repository issues.** Give each task a concrete outcome, an assignee
    and acceptance checks. For example: "Start button opens the first level";
    check that a teammate can launch the project and use the button.
@@ -134,9 +139,13 @@ group repository and its board in the [sd5913 organization](https://github.com/s
    is Backlog, Todo, In progress, Review and Done; customize the available status
    options to suit your team. Set priority by ordering work or adding a Priority
    field.
-4. **Choose a short goal.** Select work your team can finish together. An
-   optional Iteration field can group work by week. Record the Sprint Goal and
-   delivery plan too: a status column alone is not a complete Sprint Backlog.
+4. **Choose a short goal.** Select work your team can finish together. The
+   template's Iteration field has one-week cycles from 29 October to the final
+   submission week. Put selected tasks in the relevant iteration; use
+   **Current iteration** and **Next iteration** to focus on them. **Team board**
+   shows all work and **Delivery dates** shows the full review schedule. Record
+   the Sprint Goal and delivery plan too: a status column alone is not a
+   complete Sprint Backlog.
 5. **Agree your Definition of Done.** For example: integrated with the existing
    project, relevant checks pass, a teammate has tried the interaction, and run
    instructions remain accurate. Issue acceptance checks describe one feature;
@@ -168,7 +177,34 @@ build results can connect in one place. Trello, Notion or a shared Markdown
 task list can also work if the planning and weekly evidence are accessible
 from the repository. No additional Canvas upload is needed.
 
-## 4. What the 25% execution criterion looks for
+## 4. Weekly delivery meetings with your tutor
+
+Meet your assigned tutor in your scheduled tutorial slot each remaining
+teaching week. The dates below identify the **Thursday class weeks**; your
+tutor confirms the exact meeting time. The template's dated cards are progress
+milestones, not calendar invitations.
+
+| Class week | Bring a usable delivery | Review focus |
+| --- | --- | --- |
+| 5 November 2026 | First working interaction | Someone can try an input and see a response; agree the next small goal. |
+| 12 November 2026 | Integrated core experience | Show the game loop, app flow or installation interaction working together. |
+| 19 November 2026 | Playtest and feedback | Bring observations from another person trying the experience; choose an improvement. |
+| 26 November 2026 | Delivery candidate | Test a runnable build, deployment or installation setup on your chosen platform. |
+| 3 December 2026 | Final tutor delivery review | Rehearse the experience and check the README, access and final fixes. |
+
+Use these focuses to plan a suitable increment for your own project; agree any
+scope adjustments with your tutor. At each review, bring the working result,
+links to issues/PRs/tests/builds, and a blocker or question. Afterwards, update
+the dated card with what works, evidence, tutor feedback and the next goal with
+owners. Link the board and these records from your README. If you use another
+tracking tool, keep the same dates and an equivalent accessible review record.
+
+The separate **6 December 2026, 23:59 HKT** card is the final Canvas repository
+submission deadline, **not a tutor meeting**. Weekly delivery records support
+the existing 25% execution criterion; they do not add another grade component
+or Canvas upload.
+
+## 5. What the 25% execution criterion looks for
 
 Show small, steady increments and documented weekly progress through:
 
