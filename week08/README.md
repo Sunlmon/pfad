@@ -14,17 +14,19 @@ laptop with a camera, a graphical desktop, internet for first-time setup, and
 macOS Apple Silicon, and Linux x64/ARM have MediaPipe 1.2.0 wheels. Intel Macs
 are not supported by that release; pair with someone on a supported machine.
 
-From the **PFAD repository root**, run:
+From the **PFAD repository root**, enter the Week 8 folder and run:
 
 ```bash
-uv run --locked --project week08 python week08/download_models.py
-uv run --locked --project week08 python week08/vision.py camera
+cd week08
+uv run python download_models.py
+uv run python vision.py camera
 ```
 
-`uv` obtains Python 3.13 and the pinned dependencies in the separate
-`week08/.venv`; it does not replace PFAD's root environment. The first command
-downloads Google's model files into ignored `week08/models/`. The second opens a
-mirrored camera preview using OpenCV. Focus the window and press **q** to quit.
+`uv` finds this folder's project, uses its lockfile, and obtains Python 3.13
+and the dependencies in the separate `week08/.venv`; it does not replace
+PFAD's root environment. The download command saves Google's model files into
+ignored `week08/models/`. The camera command opens a mirrored OpenCV preview.
+Focus the window and press **q** to quit.
 If camera 0 is unavailable, add `--camera 1` to a `vision.py` command, or
 `--camera-index 1` to the hand-to-tile camera command. Grant camera access in
 your OS settings; close Zoom or other camera apps. On a remote/headless machine,
@@ -34,7 +36,7 @@ Open [vision.py](vision.py). `cv2.VideoCapture` gets frames, OpenCV converts BGR
 to RGB, a MediaPipe Task processes an `mp.Image`, and our code draws output.
 `VIDEO` mode takes an increasing timestamp. The six model tasks run locally.
 
-Each command below is run from the repository root. First predict, then run,
+Keep your terminal in `week08` for every command below. First predict, then run,
 observe and try the change. Press **q** before starting the next example. In a
 terminal, **Ctrl+C** is a fallback if a window fails. If an example is slow,
 close other apps, improve lighting and try a single model first. No detection
@@ -43,7 +45,7 @@ is a valid result: it should not crash your interaction.
 ## 1. Face detection: 15–23 minutes
 
 ```bash
-uv run --locked --project week08 python week08/vision.py face
+uv run python vision.py face
 ```
 
 Expect a yellow box around a detected face. Move farther away or partly cover
@@ -54,7 +56,7 @@ location estimate; it does not identify a person.
 ## 2. Hand landmarks: 23–32 minutes
 
 ```bash
-uv run --locked --project week08 python week08/vision.py hand
+uv run python vision.py hand
 ```
 
 Expect points on up to two hands. Look for index fingertip **landmark 8**. Move
@@ -64,8 +66,8 @@ Change the dot radius in `draw_points` and predict its effect. In the lecture's
 0.5 selects red, and no hand selects neither:
 
 ```bash
-python -B week08/hand_tiles.py
-uv run --locked --project week08 python week08/hand_tiles.py --camera --model week08/models/hand.task
+uv run python hand_tiles.py
+uv run python hand_tiles.py --camera --model models/hand.task
 ```
 
 The first command uses sample coordinates and no camera. The second uses the
@@ -74,7 +76,7 @@ camera. Mirror direction and camera framing affect the mapping.
 ## 3. Pose landmarks: 32–40 minutes
 
 ```bash
-uv run --locked --project week08 python week08/vision.py pose
+uv run python vision.py pose
 ```
 
 Expect green body points. Step back so your body is visible, then cover an arm.
@@ -86,7 +88,7 @@ straightens. A point behind your body may be inaccurate.
 ## 4. Face mesh: 40–50 minutes
 
 ```bash
-uv run --locked --project week08 python week08/vision.py mesh
+uv run python vision.py mesh
 ```
 
 Expect many cyan face points. Move your head and compare the points around the
@@ -97,7 +99,7 @@ These are geometry estimates, not an identity check.
 ## 5. Gesture recognition: 50–60 minutes
 
 ```bash
-uv run --locked --project week08 python week08/vision.py gesture
+uv run python vision.py gesture
 ```
 
 Expect hand points and a trained gesture label with a score when a hand is
@@ -112,7 +114,7 @@ find one comparison and discuss how hand orientation might break it.
 ## 6. Combined detection: 70–80 minutes
 
 ```bash
-uv run --locked --project week08 python week08/vision.py holistic
+uv run python vision.py holistic
 ```
 
 Expect a face box plus hand and pose points on the same frame. This version
@@ -123,7 +125,7 @@ remove `"face"` from `holistic`, predict what disappears, run, and restore it.
 ## 7. Segmentation: 80–90 minutes
 
 ```bash
-uv run --locked --project week08 python week08/vision.py segment
+uv run python vision.py segment
 ```
 
 Expect your foreground over a coloured background. Unlike landmarks, a mask
@@ -134,7 +136,7 @@ Segmentation can miss transparent objects and fine details.
 ## 8. Multiple detectors: 90–100 minutes
 
 ```bash
-uv run --locked --project week08 python week08/vision.py multi
+uv run python vision.py multi
 ```
 
 Expect segmentation, a face box, hands and pose together. Compare the speed
@@ -145,7 +147,7 @@ served by choosing just one input.
 ## 9. Expression classifier: 100–110 minutes
 
 ```bash
-uv run --locked --project week08 --group emotion python week08/vision.py emotion
+uv run --group emotion python vision.py emotion
 ```
 
 This installs the additional EmotiEffLib/ONNX dependencies and downloads its

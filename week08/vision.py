@@ -32,7 +32,7 @@ def make_task(name):
     cls, opts, filename = TASKS[name]
     model = MODELS / filename
     if not model.exists():
-        raise FileNotFoundError(f"Missing {model}. Run: uv run --project week08 python week08/download_models.py")
+        raise FileNotFoundError(f"Missing {model}. See week08/README.md for model download instructions.")
     kwargs = {"base_options": python.BaseOptions(model_asset_path=str(model)),
               "running_mode": vision.RunningMode.VIDEO}
     if name == "mesh":
