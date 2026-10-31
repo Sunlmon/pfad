@@ -33,7 +33,8 @@ def make_task(name):
     model = MODELS / filename
     if not model.exists():
         raise FileNotFoundError(f"Missing {model}. See week08/README.md for model download instructions.")
-    kwargs = {"base_options": python.BaseOptions(model_asset_path=str(model)),
+    # Read with Python so Windows native model loading need not handle Unicode paths.
+    kwargs = {"base_options": python.BaseOptions(model_asset_buffer=model.read_bytes()),
               "running_mode": vision.RunningMode.VIDEO}
     if name == "mesh":
         kwargs["output_face_blendshapes"] = True
